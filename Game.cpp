@@ -18,6 +18,8 @@ void Game::Run() {
 		// step 4: The objects are drawn in the screen
 		state->Render();
 
+
+		SDL_RenderPresent(renderer);
 		SDL_Delay(33);
 	}
 
