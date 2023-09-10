@@ -3,21 +3,17 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#include "Game.cpp"
 
 
 int main(int argc, char **argv) {
+	const int SCREEN_WIDTH = 1024, SCREEN_HEIGHT = 600;
+               
+	Game game = Game::GetInstance("work 1", SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	SDL_Init(SDL_INIT_EVERYTHING);
-	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
-	Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);// wav is default
-	TTF_Init();
+	game.Run();
 
 
-	TTF_Quit();
-	Mix_Quit();
-	IMG_Quit();
-	SDL_Quit();
-	
 	return 0;
 
 }
