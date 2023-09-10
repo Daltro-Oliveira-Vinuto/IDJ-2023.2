@@ -4,6 +4,7 @@
 State::State() {
 	quitRequested = false;
 	bg = Sprite(); // what parameters should I pass to Sprite?
+	//this->LoadAssets();
 }
 
 void State::LoadAssets() {
@@ -12,7 +13,7 @@ void State::LoadAssets() {
 
 void State::Update(float dt) {
 
-	if (QuitRequested()) {
+	if (SDL_QuitRequested()) {
 		quitRequested = true;
 	}
 }

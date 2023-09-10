@@ -5,14 +5,21 @@
 
 void Game::Run() {
 	printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
-	// step 1: Verify, control and load the game's screens;
 
-	// step 2: Input date readed and processed
+	while(state->QuitRequested()) {
+		// step 1: Verify, control and load the game's screens;
 
-	// UNFINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// step 3: State of the objects are updated
+		// step 2: Input date readed and processed
 
-	// step 4: The objects are drawn in the screen
+		// UNFINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// step 3: State of the objects are updated
+		state->Update(0);
+
+		// step 4: The objects are drawn in the screen
+		state->Render();
+
+		SDL_Delay(33);
+	}
 
 }
 
