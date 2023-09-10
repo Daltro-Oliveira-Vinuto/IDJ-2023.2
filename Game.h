@@ -1,6 +1,6 @@
 #include <string>
 #include <SDL.h>
-#include "State.h"
+#include "State.cpp"
 
 #ifndef __GAME_H__
 #define __GAME_H__

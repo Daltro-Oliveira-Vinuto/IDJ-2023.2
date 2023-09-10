@@ -4,6 +4,14 @@
 
 class Sprite {
 
+public:
+
+
+	void Render(int, int);
+
+private:
+
+
 };
 
 
