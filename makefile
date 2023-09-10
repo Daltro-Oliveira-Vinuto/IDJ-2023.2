@@ -14,7 +14,7 @@ INCLUDE_PATHS = -IC:\SDL-2.28.2\include\SDL2
 LIBRARY_PATHS = -LC:\SDL-2.28.2\lib
 
 # to show only windows screen add -mwindows to LINKER_FLAGS
-LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer 
+LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -mwindows
 
 # add -Wextra to see extra warnings
 COMPILE_FLAGS = -Wall -std=c++17
