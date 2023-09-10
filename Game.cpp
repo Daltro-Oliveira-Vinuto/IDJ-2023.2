@@ -3,6 +3,10 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 
+void Game::Run() {
+	printf("Game is running!---------------> \n");
+}
+
 Game* Game::instance = NULL;
 
 Game::Game(std::string title, int width, int height) {
@@ -57,10 +61,6 @@ Game::Game(std::string title, int width, int height) {
 	}
 }
 
-void Game::Run() {
-	printf("Game is running!---------------> \n");
-}
-
 Game& Game::GetInstance(std::string title, int width, int height) {
 
 	if (instance != NULL) {
@@ -72,3 +72,20 @@ Game& Game::GetInstance(std::string title, int width, int height) {
 			return *instance;
 	}
 }
+
+Game::~Game() {
+	delete state; state = NULL;
+
+	SDL_DestroyRenderer(renderer); renderer = NULL;
+
+	SDL_DestroyWindow(window); window = NULL;
+
+	Mix_CloseAudio();
+
+	Mix_Quit();
+	IMG_Quit();
+	SDL_Quit();
+
+}
+
+

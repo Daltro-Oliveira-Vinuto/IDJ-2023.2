@@ -10,7 +10,7 @@ public:
 
 	//Game(const Game& obj) = delete;
 
-
+	~Game();
 	void Run();
 
 	static Game& GetInstance(std::string, int, int);
