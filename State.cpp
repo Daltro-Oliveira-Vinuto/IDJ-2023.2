@@ -1,9 +1,10 @@
 #include "State.h"
 
 // calling correctly the constructor of a class member is SUPER IMPORTANT!
-State::State(SDL_Renderer* renderer): bg(renderer, "assets/img/ocean.jpg") {
+State::State(SDL_Renderer* renderer): bg(renderer, "assets/img/ocean.jpg"), music("assets/audio/stageState.ogg") {
 	quitRequested = false;
 	//this->LoadAssets(renderer);
+	music.Play();
 }
 
 void State::LoadAssets() {
