@@ -11,9 +11,13 @@ public:
 	//Game(const Game& obj) = delete;
 
 	~Game();
-	void Run();
 
 	static Game& GetInstance(std::string, int, int);
+	
+	void Run();
+
+	State& GetState();
+	SDL_Renderer* GetRenderer();
 
 
 private:

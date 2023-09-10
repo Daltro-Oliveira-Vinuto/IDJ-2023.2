@@ -4,7 +4,16 @@
 #include <SDL_mixer.h>
 
 void Game::Run() {
-	printf("Game is running!---------------> \n");
+	printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
+	// step 1: Verify, control and load the game's screens;
+
+	// step 2: Input date readed and processed
+
+	// UNFINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// step 3: State of the objects are updated
+
+	// step 4: The objects are drawn in the screen
+
 }
 
 Game* Game::instance = NULL;
@@ -62,15 +71,18 @@ Game::Game(std::string title, int width, int height) {
 }
 
 Game& Game::GetInstance(std::string title, int width, int height) {
+	Game* aux_instance = NULL;
 
 	if (instance != NULL) {
-			return *instance;
+			aux_instance = instance;
 
 	} else if (instance == NULL) {
 			instance = new Game(title, width, height);
 
-			return *instance;
+			aux_instance = instance;
 	}
+
+	return *aux_instance;
 }
 
 Game::~Game() {
@@ -88,4 +100,11 @@ Game::~Game() {
 
 }
 
+State& Game::GetState() {
+	return *state;
+}
+
+SDL_Renderer* Game::GetRenderer() {
+	return renderer;
+}
 
