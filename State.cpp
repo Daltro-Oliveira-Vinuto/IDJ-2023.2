@@ -1,14 +1,13 @@
 #include "State.h"
 
-
-State::State() {
+// calling correctly the constructor of a class member is SUPER IMPORTANT!
+State::State(SDL_Renderer* renderer): bg(renderer, "assets/img/ocean.jpg") {
 	quitRequested = false;
-	bg = Sprite(); // what parameters should I pass to Sprite?
-	//this->LoadAssets();
+	//this->LoadAssets(renderer);
 }
 
 void State::LoadAssets() {
-
+	
 }
 
 void State::Update(float dt) {
@@ -18,9 +17,10 @@ void State::Update(float dt) {
 	}
 }
 
-void State::Render() {
+void State::Render(SDL_Renderer* renderer) {
 
-	bg.Render(0,0);
+	bg.SetClip(0, 0, bg.GetWidth(), bg.GetHeight());
+	bg.Render(renderer, 0, 0);
 }
 
 bool State::QuitRequested() {

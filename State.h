@@ -7,11 +7,11 @@
 class State {
 
 public:
-	State();
+	State(SDL_Renderer*);
 
 	void LoadAssets();
 	void Update(float);
-	void Render();
+	void Render(SDL_Renderer*);
 	bool QuitRequested();
 
 private:

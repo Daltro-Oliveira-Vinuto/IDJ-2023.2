@@ -4,9 +4,17 @@
 #include <SDL_mixer.h>
 
 void Game::Run() {
-	printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
+	//printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
 
-	while(state->QuitRequested()) {
+	while(state->QuitRequested()==false) {
+		/*
+		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff,0xff);
+		SDL_RenderClear(renderer);
+		SDL_Rect rect = {50,50, 200, 200};
+		SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0xff);
+		SDL_RenderDrawRect(renderer, &rect);
+		*/
+
 		// step 1: Verify, control and load the game's screens;
 
 		// step 2: Input date readed and processed
@@ -16,7 +24,7 @@ void Game::Run() {
 		state->Update(0);
 
 		// step 4: The objects are drawn in the screen
-		state->Render();
+		state->Render(renderer);
 
 
 		SDL_RenderPresent(renderer);
@@ -66,8 +74,9 @@ Game::Game(std::string title, int width, int height) {
 								printf("Renderer not created! Error: %s\n", SDL_GetError());
 							} else {
 
+								//printf("Address of rendered created: %p\n", renderer);
 								// At this point window and renderer had been successfully created
-								state = new State();
+								state = new State(renderer);
 							}
 
 						}

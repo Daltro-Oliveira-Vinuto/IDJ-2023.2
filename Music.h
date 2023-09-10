@@ -5,6 +5,14 @@
 
 
 class Music {
+public:
+	Music();
+	Music(std::string);
+
+	void Open(std::string);
+	
+private:
+	Mix_Music* music;
 
 };
 
