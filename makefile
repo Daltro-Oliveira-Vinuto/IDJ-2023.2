@@ -5,7 +5,7 @@ clear:
 
 OBJS = main.cpp
 
-OBJ_NAME = releases/main.exe 
+OBJ_NAME = main.exe 
 
 CC = g++
 
