@@ -7,7 +7,7 @@ clear:
 
 OBJS = 	src/*.cpp
 
-OBJ_NAME = bin/main.exe
+OBJ_NAME = main.exe
 
 C++ = g++
 
