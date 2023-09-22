@@ -1,9 +1,9 @@
 #include <string>
-#include <SDL.h>
-#include "State.cpp"
+#include "SDL.h"
+#include "State.h"
 
-#ifndef __GAME_H__
-#define __GAME_H__
+#ifndef GAME_H
+#define GAME_H
 
 class Game {
 public:
@@ -12,7 +12,7 @@ public:
 
 	~Game();
 
-	static Game& GetInstance(std::string, int, int);
+	static Game& GetInstance(std::string title, int width, int height);
 	
 	void Run();
 
@@ -24,12 +24,11 @@ private:
 	Game(std::string, int, int);
 
 	static Game* instance;
-	SDL_Window* window;
-	SDL_Renderer *renderer;
-	State* state;
+	SDL_Window* window = NULL;
+	SDL_Renderer *renderer = NULL;
+	State* state = NULL;
 
 };
-
 
 
 

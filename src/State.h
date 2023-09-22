@@ -1,17 +1,17 @@
-#include "Sprite.cpp"
-#include "Music.cpp"
+#include "Sprite.h"
+#include "Music.h"
 
-#ifndef __STATE_H__
-#define __STATE_H__
+#ifndef STATE_H
+#define STATE_H
 
 class State {
 
 public:
-	State(SDL_Renderer*);
+	State();
 
 	void LoadAssets();
 	void Update(float);
-	void Render(SDL_Renderer*);
+	void Render();
 	bool QuitRequested();
 
 private:

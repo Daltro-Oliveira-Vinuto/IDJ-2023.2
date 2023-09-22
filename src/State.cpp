@@ -1,10 +1,11 @@
 #include "State.h"
+#include "SDL.h"
 
 // calling correctly the constructor of a class member is SUPER IMPORTANT!
-State::State(SDL_Renderer* renderer): bg(renderer, "assets/img/ocean.jpg"), music("assets/audio/stageState.ogg") {
+State::State(): bg("./assets/img/ocean.jpg"), music("./assets/audio/stageState.ogg") {
 	quitRequested = false;
 	//this->LoadAssets(renderer);
-	music.Play();
+	music.Play(-1);
 }
 
 void State::LoadAssets() {
@@ -18,10 +19,10 @@ void State::Update(float dt) {
 	}
 }
 
-void State::Render(SDL_Renderer* renderer) {
+void State::Render() {
 
 	bg.SetClip(0, 0, bg.GetWidth(), bg.GetHeight());
-	bg.Render(renderer, 0, 0);
+	bg.Render( 0, 0);
 }
 
 bool State::QuitRequested() {

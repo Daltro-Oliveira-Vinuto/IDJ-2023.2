@@ -1,18 +1,21 @@
+#include "SDL.h"
+#include "SDL_image.h"
 #include "Sprite.h"
+#include "Game.h"
 
 Sprite::Sprite() {
 	texture = NULL;
 }
 
-Sprite::Sprite(SDL_Renderer* renderer, std::string file) {
-	Open(renderer, file);
+Sprite::Sprite(std::string file) {
+	Open(file);
 }
 
 Sprite::~Sprite() {
 	SDL_DestroyTexture(texture);
 }
 
-void Sprite::Open(SDL_Renderer* renderer, std::string file) {
+void Sprite::Open(std::string file) {
 	if (texture != NULL) {
 		SDL_DestroyTexture(texture);
 	} else {
@@ -20,7 +23,7 @@ void Sprite::Open(SDL_Renderer* renderer, std::string file) {
 	}
 	
 
-	texture = IMG_LoadTexture(renderer, file.c_str());
+	texture = IMG_LoadTexture(Game::GetInstance("",0,0).GetRenderer(), file.c_str());
 
 	if (texture == NULL) {
 		printf("Texture not loaded! Error: %s\n", SDL_GetError());
@@ -35,10 +38,10 @@ void Sprite::SetClip(int x, int y, int width, int height) {
 
 }
 
-void Sprite::Render(SDL_Renderer* renderer, int x, int y) {
+void Sprite::Render( int x, int y) {
 	SDL_Rect destine_rect = {x, y, clipRect.w, clipRect.h};
 
-	if (SDL_RenderCopy(renderer,  texture, &clipRect, &destine_rect) != 0) {
+	if (SDL_RenderCopy(Game::GetInstance("",0,0).GetRenderer(), texture, &clipRect, &destine_rect) != 0) {
 		printf("Error to render, %s\n", SDL_GetError());
 	} 
 	

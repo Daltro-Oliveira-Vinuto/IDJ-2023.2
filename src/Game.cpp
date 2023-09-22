@@ -1,7 +1,11 @@
 #include "Game.h"
+#include "State.h"
 #include <string>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
+#include "SDL_image.h"
+#include "SDL_mixer.h"
+
+Game* Game::instance = NULL;
+
 
 void Game::Run() {
 	//printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
@@ -24,7 +28,7 @@ void Game::Run() {
 		state->Update(0);
 
 		// step 4: The objects are drawn in the screen
-		state->Render(renderer);
+		state->Render();
 
 
 		SDL_RenderPresent(renderer);
@@ -32,8 +36,6 @@ void Game::Run() {
 	}
 
 }
-
-Game* Game::instance = NULL;
 
 Game::Game(std::string title, int width, int height) {
 	if (instance != NULL) {
@@ -76,7 +78,7 @@ Game::Game(std::string title, int width, int height) {
 
 								//printf("Address of rendered created: %p\n", renderer);
 								// At this point window and renderer had been successfully created
-								state = new State(renderer);
+								state = new State();
 							}
 
 						}
