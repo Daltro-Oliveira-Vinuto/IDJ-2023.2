@@ -8,3 +8,9 @@
 <p>
 	The environment of development is the Linux(x64). 
 </p>
+
+<p>
+	To compile, link and execute just type: make
+	To only execute just type: make load
+
+	</p>
