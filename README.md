@@ -14,5 +14,5 @@
 </p>
 
 <p>
-		To only execute just type: make load
+		To only execute just type: make load or ./main.exe
 </p>
