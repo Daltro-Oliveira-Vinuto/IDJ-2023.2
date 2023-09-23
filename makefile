@@ -48,7 +48,7 @@ load_on_valgrind:
 	valgrind $(VALGRIND_FLAGS) ./$(OBJ_NAME)
 
 clean:
-	rm -f -r *.o bin/*.exe
+	rm -f -r *.o bin/*.exe *.exe
 
 clean_objects:
 	rm -f -r *.o
