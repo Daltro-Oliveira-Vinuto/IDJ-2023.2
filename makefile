@@ -1,5 +1,5 @@
-all: clear compile_and_assemble link clean_objects load 
-run: clear compile_and_assemble link clean_objects load_on_valgrind open_valgrind_txt
+all: clear compile_and_assemble link load 
+run: clear compile_and_assemble link load_on_valgrind open_valgrind_txt
 
 
 clear:

@@ -29,3 +29,7 @@ bool State::QuitRequested() {
 
 	return quitRequested;
 }
+
+void State::RequestToQuit() {
+	quitRequested = true;
+}

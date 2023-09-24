@@ -14,6 +14,10 @@ public:
 	void Render();
 	bool QuitRequested();
 
+
+
+	void RequestToQuit();
+
 private:
 	Sprite bg;
 	Music music;
