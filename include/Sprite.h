@@ -1,5 +1,6 @@
 #include <string>
 #include "SDL.h"
+//#include "Component.h"
 
 #ifndef SPRITE_H
 #define SPRITE_H
