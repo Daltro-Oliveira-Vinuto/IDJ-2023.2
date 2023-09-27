@@ -50,7 +50,7 @@ load_on_valgrind:
 clean:
 	rm -f -r *.o bin/*.exe *.exe
 
-clean_objects:
+clean_o:
 	rm -f -r *.o
 
 open_valgrind_txt:

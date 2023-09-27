@@ -74,9 +74,10 @@ void State::Update(float dt) {
 
 	time_passed+= delay;
 
-	if (time_passed > max_time) {
+	if (time_passed > max_time && soundsArray.size() != 0) {
 		time_passed = 0;
-		soundsArray.erase(soundsArray.end()-1);
+		//soundsArray.erase(soundsArray.end()-1);
+		soundsArray.pop_back();
 	}
 }
 
