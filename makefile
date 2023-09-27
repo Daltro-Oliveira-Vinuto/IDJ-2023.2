@@ -42,7 +42,7 @@ link:
 	$(C++) *.o $(LINKER_FLAGS) -o $(OBJ_NAME)  
 
 
-VALGRIND_FLAGS := --leak-check:=full --track-origins:=yes --log-file:=valgrind.txt  # --show-leak-kinds:=all 
+VALGRIND_FLAGS := --leak-check=full --track-origins=yes --log-file=valgrind.txt  # --show-leak-kinds:=all 
 
 load_on_valgrind:
 	valgrind $(VALGRIND_FLAGS) ./$(OBJ_NAME)

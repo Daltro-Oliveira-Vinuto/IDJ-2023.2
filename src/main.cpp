@@ -9,7 +9,7 @@
 #include "Rect.h"
 #include "Vec2.h"
 
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 
 int main(int argc, char **argv) {
@@ -36,7 +36,8 @@ int main(int argc, char **argv) {
 	std::cout << "v1 rotated in -90 degrees: " << 
 	v1.Rotate(Vec2::ConvertDegreeToRadian(-90)) << std::endl;
 
-	Rect r1(0,0,10,10), r2(100, 0,50,10);
+	Rect r1(0,0,10,10), r2;
+	r2 = r1;
 
 	std::cout << "distance r1 to r2: "<< r1.DistanceTo(r2) << std::endl;
 	std::cout << "contains : " << r1.ContainVec2(v1) << std::endl;

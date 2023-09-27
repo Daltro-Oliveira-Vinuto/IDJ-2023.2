@@ -6,10 +6,20 @@
 #include "SDL_mixer.h"
 
 Game* Game::instance = NULL;
+int Game::FPS = 30;
 
+void Game::Update(float dt) {
+	state->Update(dt);
+}
+
+void Game::Render() {
+	state->Render();
+}
 
 void Game::Run() {
 	//printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
+
+	int delay = 1000.0/FPS;
 
 	while(state->QuitRequested()==false) {
 		/*
@@ -26,17 +36,17 @@ void Game::Run() {
 
 		// UNFINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// step 3: State of the objects are updated
-		state->Update(0);
+		Update(0);
 
 		// step 4: The objects are drawn in the screen
-		state->Render();
+		Render();
 
 
 		SDL_RenderPresent(renderer);
-		SDL_Delay(33);
+		SDL_Delay(delay);
 
 
-
+		/*
 		SDL_Event event;
 
 		while(SDL_PollEvent(&event)!=0) {
@@ -53,11 +63,13 @@ void Game::Run() {
 					break;
 				}
 		}
+		*/
 	}
 
 }
 
 Game::Game(std::string title, int width, int height) {
+	FPS = 30;
 	if (instance != NULL) {
 		printf("Error! Game constructor should be called only once!\n");
 	} else {

@@ -14,12 +14,14 @@ public:
 
 	static Game& GetInstance(std::string title, int width, int height);
 	
+	void Update(float);
+	void Render();
 	void Run();
 
 	State& GetState();
 	SDL_Renderer* GetRenderer();
 
-
+	static int FPS;
 private:
 	Game(std::string, int, int);
 
