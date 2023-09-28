@@ -2,6 +2,7 @@
 #include "SDL_image.h"
 #include "Sprite.h"
 #include "Game.h"
+#include "Rect.h"
 
 Sprite::Sprite(GameObject& associated): Component(associated) {
 	texture = NULL;
@@ -29,17 +30,12 @@ void Sprite::Open(std::string file) {
 		printf("Texture not loaded! Error: %s\n", SDL_GetError());
 	} else {
 		SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-		int x, y;
-		x = associated.box.x;
-		y = associated.box.y;
-
-		clipRect = {x,y,width,height};
-
+		clipRect = {0,0, width, height};
 	}
 }
 
-void Sprite::SetClip(int x, int y, int width, int height) {
-	clipRect = {x, y, width, height};
+void Sprite::SetClip(const Rect& clip) {
+	clipRect = {clip.x, clip.y, clip.w, clip.h};
 
 }
 
@@ -53,12 +49,16 @@ void Sprite::Render() {
 	x = associated.box.x;
 	y = associated.box.y;
 
+	Render(x, y);
+	
+}
+
+void Sprite::Render(int x, int y) {
 	SDL_Rect destine_rect = {x, y, clipRect.w, clipRect.h};
 
 	if (SDL_RenderCopy(Game::GetInstance("",0,0).GetRenderer(), texture, &clipRect, &destine_rect) != 0) {
 		printf("Error to render, %s\n", SDL_GetError());
 	} 
-	
 }
 
 bool Sprite::Is(std::string type) {

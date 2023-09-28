@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
 
 
-	Game game = Game::GetInstance("work two", SCREEN_WIDTH, SCREEN_HEIGHT);		
+	Game game = Game::GetInstance("work three", SCREEN_WIDTH, SCREEN_HEIGHT);		
 	game.Run();
 
 	return 0;

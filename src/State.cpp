@@ -5,10 +5,12 @@
 #include "State.h"
 #include "SDL.h"
 #include "Vec2.h"
+#include "Rect.h"
 #include "Sprite.h"
 #include "Sound.h"
 #include "Face.h"
 #include "Game.h"
+#include "TileSet.h"
 
 const int max_time = 5000;
 int time_passed;
@@ -18,14 +20,7 @@ State::State():  music("./assets/audio/stageState.ogg") {
 	//this->LoadAssets(renderer);
 	music.Play(-1);
 
-	std::unique_ptr<GameObject> newGameObject(new GameObject());
-	std::unique_ptr<Sprite> newSprite(new Sprite(*newGameObject, "assets/img/ocean.jpg") );
-	newGameObject->box = Rect(0,0, newSprite->GetWidth(), newSprite->GetHeight() );
-	newGameObject->AddComponent(std::move(newSprite));
-
-	objectArray.emplace_back(std::move( newGameObject) );
-
-	time_passed = 0;
+	this->LoadAssets();
 }
 
 State::~State() {
@@ -42,7 +37,37 @@ State::~State() {
 }
 
 void State::LoadAssets() {
-	
+		
+	std::unique_ptr<GameObject> newGameObject(new GameObject());
+	std::unique_ptr<Sprite> newSprite(new Sprite(*newGameObject, "assets/img/ocean.jpg") );
+	Rect clip(0, 0, newSprite->GetWidth(), newSprite->GetHeight());
+	newSprite->SetClip(clip);
+	newGameObject->box = clip;
+	newGameObject->AddComponent(std::move(newSprite));
+
+	objectArray.emplace_back(std::move( newGameObject) );
+
+	TileSet* tileSet = new TileSet(64,64,"assets/img/tileset.png");
+
+	/*
+	SDL_Event e;
+	bool quit = false;
+	while (!quit) {
+		while(SDL_PollEvent(&e)!=0) {
+			if (e.type == SDL_KEYDOWN) {
+				if (e.key.keysym.sym == SDLK_ESCAPE) {
+					quit = true;
+				}
+			} else if (e.type == SDL_QUIT) {
+				quit = true;
+			}
+			tileSet->RenderTile(0, 100,100);
+			SDL_RenderPresent(Game::GetInstance("",0,0).GetRenderer());
+		} 
+	}
+	*/
+
+	time_passed = 0;
 }
 
 void State::Update(float dt) {
@@ -76,7 +101,7 @@ void State::Update(float dt) {
 
 	if (time_passed > max_time && soundsArray.size() != 0) {
 		time_passed = 0;
-		//soundsArray.erase(soundsArray.end()-1);
+		//soundsArray.era/se(soundsArray.end()-1);
 		soundsArray.pop_back();
 	}
 }
@@ -161,7 +186,8 @@ void State::AddObject(int mouseX, int mouseY) {
 	std::unique_ptr<GameObject> newGameObject(new GameObject());
 
 	std::unique_ptr<Sprite> newSprite = std::make_unique<Sprite>(*newGameObject, "assets/img/penguinface.png");
-
+	Rect clip(0, 0, newSprite->GetWidth(), newSprite->GetHeight());
+	newSprite->SetClip(clip);
 	newGameObject->box = Rect(mouseX-newSprite->GetWidth()/2, 
 		mouseY - newSprite->GetHeight()/2, newSprite->GetWidth(), newSprite->GetHeight() );
 
