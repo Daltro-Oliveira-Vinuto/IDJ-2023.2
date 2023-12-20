@@ -4,6 +4,7 @@
 #include "GameObject.h"
 
 #include "Music.h"
+#include "TileSet.h"
 
 
 #ifndef STATE_H

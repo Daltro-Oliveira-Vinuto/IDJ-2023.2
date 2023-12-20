@@ -19,8 +19,8 @@ void Game::Render() {
 void Game::Run() {
 	//printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
 
-	int delay = 1000.0/FPS;
 
+	int delay = 1000.0/FPS;
 	while(state->QuitRequested()==false) {
 		/*
 		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff,0xff);
@@ -69,6 +69,7 @@ void Game::Run() {
 }
 
 Game::Game(std::string title, int width, int height) {
+	//printf("Object Game started!\n");
 	FPS = 30;
 	if (instance != NULL) {
 		printf("Error! Game constructor should be called only once!\n");
@@ -107,10 +108,14 @@ Game::Game(std::string title, int width, int height) {
 							if (renderer == NULL) {
 								printf("Renderer not created! Error: %s\n", SDL_GetError());
 							} else {
+								resources = new Resources();
+								//printf("address of resources allocated: %p\n", resources);
 
 								//printf("Address of rendered created: %p\n", renderer);
 								// At this point window and renderer had been successfully created
 								state = new State();
+
+								
 							}
 
 						}
@@ -120,6 +125,8 @@ Game::Game(std::string title, int width, int height) {
 			}
 		}
 	}
+
+	//printf("Game initialized!\n");
 }
 
 Game& Game::GetInstance(std::string title, int width, int height) {
@@ -138,6 +145,9 @@ Game& Game::GetInstance(std::string title, int width, int height) {
 }
 
 Game::~Game() {
+
+	delete this->resources; // call destructor of the class Resources
+
 	delete state; state = NULL;
 
 	SDL_DestroyRenderer(renderer); renderer = NULL;
@@ -160,3 +170,8 @@ SDL_Renderer* Game::GetRenderer() {
 	return renderer;
 }
 
+
+Resources& Game::GetResources() {
+	//printf("address of resources passed: %p\n", resources);
+	return *resources;
+}

@@ -11,6 +11,7 @@
 #include "Face.h"
 #include "Game.h"
 #include "TileSet.h"
+#include "TileMap.h"
 
 const int max_time = 5000;
 int time_passed;
@@ -21,19 +22,18 @@ State::State():  music("./assets/audio/stageState.ogg") {
 	music.Play(-1);
 
 	this->LoadAssets();
+
+	//printf("State initialized!\n");
 }
 
 State::~State() {
 	// is unique_ptr than there is no need to 'delete' each element
+	soundsArray.clear();
+
 	objectArray.clear();
 
-	/*
-	for(unsigned i = 0; i < sounds.size(); i++) {
-		delete sounds.back();
-		sounds.pop_back();
-	}
-	*/
-	soundsArray.clear();
+
+
 }
 
 void State::LoadAssets() {
@@ -44,10 +44,17 @@ void State::LoadAssets() {
 	newSprite->SetClip(clip);
 	newGameObject->box = clip;
 	newGameObject->AddComponent(std::move(newSprite));
+	objectArray.emplace_back(std::move(newGameObject));
 
-	objectArray.emplace_back(std::move( newGameObject) );
 
+	std::unique_ptr<GameObject> gameObjectWithTileMap = std::make_unique<GameObject>();
 	TileSet* tileSet = new TileSet(64,64,"assets/img/tileset.png");
+	//std::unique_ptr<TileSet> tileSet(new TileSet(64,64, "assets/img/tileset.png"));
+	std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(*gameObjectWithTileMap,"assets/map/tileMap.txt", tileSet);
+	gameObjectWithTileMap->box = Rect(0,0,tileSet->GetTileWidth(), tileSet->GetTileHeight());
+	gameObjectWithTileMap->AddComponent(std::move(tileMap));
+
+	objectArray.emplace_back(std::move( gameObjectWithTileMap) );
 
 	/*
 	SDL_Event e;
@@ -178,6 +185,8 @@ void State::Input() {
 				Vec2 objPos = Vec2( 100, 0 ).Rotate( -M_PI + M_PI*(rand() % 1001)/500.0 ) + vec2_cliqued;
 				AddObject((int)objPos.x, (int)objPos.y);
 			}
+
+
 		}
 	}
 }

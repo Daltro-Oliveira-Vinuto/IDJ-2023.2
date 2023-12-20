@@ -1,6 +1,9 @@
-all: clear compile_and_assemble link load 
-run: clear compile_and_assemble link load_on_valgrind open_valgrind_txt
+run: clear compile_and_assemble link  load #load_on_valgrind open_valgrind_txt
 
+all: clear compile_and_assemble link load 
+
+clear_objects:
+	mv *.o ./trash
 
 clear:
 	clear
@@ -25,7 +28,7 @@ LIBRARY_PATHS :=
 LINKER_FLAGS := -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lm
 
 # add -Wextra to see extra warnings
-COMPILE_FLAGS := -Wall -std=c++17 
+COMPILE_FLAGS := -Wall -std=c++17 -g
 
 compile_assemble_link: $(OBJS)
 	$(C++) $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(LINKER_FLAGS) $(COMPILE_FLAGS) -o $(OBJ_NAME)
@@ -42,7 +45,7 @@ link:
 	$(C++) *.o $(LINKER_FLAGS) -o $(OBJ_NAME)  
 
 
-VALGRIND_FLAGS := --leak-check=full --track-origins=yes --log-file=valgrind.txt  # --show-leak-kinds:=all 
+VALGRIND_FLAGS := --leak-check=full --log-file=valgrind.txt   #--track-origins=yes   --show-leak-kinds=all  
 
 load_on_valgrind:
 	valgrind $(VALGRIND_FLAGS) ./$(OBJ_NAME)
@@ -55,3 +58,6 @@ clean_o:
 
 open_valgrind_txt:
 	subl valgrind.txt
+
+debug:
+	gdb  main.exe -ex "b 1"  -ex "r" -ex "layout src"  main.exe 

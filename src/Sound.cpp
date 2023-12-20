@@ -1,4 +1,5 @@
 #include "Sound.h"
+#include "Game.h"
 
 
 Sound::Sound(GameObject& associated) : Component(associated) {
@@ -13,7 +14,8 @@ Sound::Sound(GameObject& associated, std::string file) : Component(associated) {
 Sound::~Sound() {
 	if (chunk != NULL) {
 		Mix_HaltChannel(channel);
-		Mix_FreeChunk(chunk);
+		//Mix_FreeChunk(chunk);
+		// Chunk is released by the destructor of Resources of the Game object
 	}
 }
 
@@ -32,7 +34,8 @@ void Sound::Stop() {
 }
 
 void Sound::Open(std::string file) {
-	chunk = Mix_LoadWAV(file.c_str());
+	//chunk = Mix_LoadWAV(file.c_str());
+	this->chunk = Game::GetInstance("",0,0).GetResources().GetSound(file);
 
 	if (chunk == NULL) {
 		printf("Error! %s not opened! %s\n", file.c_str(), Mix_GetError());

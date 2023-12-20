@@ -7,7 +7,7 @@
 class TileSet {
 public:
 	TileSet(int, int, std::string);
-	void RenderTile(unsigned, int, int);
+	void RenderTile(unsigned, float, float);
 
 	int GetTileWidth();
 	int GetTileHeight();

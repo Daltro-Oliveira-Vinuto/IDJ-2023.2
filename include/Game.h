@@ -1,6 +1,8 @@
 #include <string>
 #include "SDL.h"
 #include "State.h"
+#include "Resources.h"
+
 
 #ifndef GAME_H
 #define GAME_H
@@ -20,6 +22,7 @@ public:
 
 	State& GetState();
 	SDL_Renderer* GetRenderer();
+	Resources& GetResources();
 
 	static int FPS;
 private:
@@ -29,6 +32,8 @@ private:
 	SDL_Window* window = NULL;
 	SDL_Renderer *renderer = NULL;
 	State* state = NULL;
+
+	Resources* resources = NULL;
 
 };
 

@@ -13,18 +13,23 @@ Sprite::Sprite(GameObject& associated, std::string file): Component(associated) 
 }
 
 Sprite::~Sprite() {
-	SDL_DestroyTexture(texture);
+	//SDL_DestroyTexture(texture);
+	// ClearImages() of game will do this
 }
 
 void Sprite::Open(std::string file) {
+
+	/*
 	if (texture != NULL) {
 		SDL_DestroyTexture(texture);
 	} else {
 		texture = NULL;
 	}
-	
+	*/
 
-	texture = IMG_LoadTexture(Game::GetInstance("",0,0).GetRenderer(), file.c_str());
+
+	this->texture = Game::GetInstance("",0,0).GetResources().GetImage(file.c_str());
+	//texture = IMG_LoadTexture(Game::GetInstance("",0,0).GetRenderer(), file.c_str());
 
 	if (texture == NULL) {
 		printf("Texture not loaded! Error: %s\n", SDL_GetError());
