@@ -1,11 +1,11 @@
-run: clear compile_and_assemble link  load #load_on_valgrind open_valgrind_txt
+run: cls compile_and_assemble link  load #load_on_valgrind open_valgrind_txt
 
-all: clear compile_and_assemble link load 
-
-clear_objects:
-	mv *.o ./trash
+all: cls compile_and_assemble link load 
 
 clear:
+	mv *.o ./trash
+
+cls:
 	clear
 
 OBJS := 	src/*.cpp
