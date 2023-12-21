@@ -9,6 +9,8 @@ Game* Game::instance = NULL;
 int Game::FPS = 30;
 
 void Game::Update(float dt) {
+	//input.Update();
+	InputManager::GetInstance().Update();
 	state->Update(dt);
 }
 
@@ -21,6 +23,8 @@ void Game::Run() {
 
 
 	int delay = 1000.0/FPS;
+	//InputManager::GetInstance().Update();
+	//state->Update(0);
 	while(state->QuitRequested()==false) {
 		/*
 		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff,0xff);
@@ -36,10 +40,11 @@ void Game::Run() {
 
 		// UNFINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// step 3: State of the objects are updated
-		Update(0);
+
+		this->Update(0);
 
 		// step 4: The objects are drawn in the screen
-		Render();
+		this->Render();
 
 
 		SDL_RenderPresent(renderer);
@@ -69,6 +74,9 @@ void Game::Run() {
 }
 
 Game::Game(std::string title, int width, int height) {
+
+	InputManager::GetInstance();
+
 	//printf("Object Game started!\n");
 	FPS = 30;
 	if (instance != NULL) {
@@ -160,6 +168,7 @@ Game::~Game() {
 	IMG_Quit();
 	SDL_Quit();
 
+	// call the destructor of InputManager
 }
 
 State& Game::GetState() {
@@ -175,3 +184,10 @@ Resources& Game::GetResources() {
 	//printf("address of resources passed: %p\n", resources);
 	return *resources;
 }
+
+/*
+InputManager& Game::GetInput() {
+
+	return input;
+}
+*/

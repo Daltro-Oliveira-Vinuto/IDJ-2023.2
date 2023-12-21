@@ -117,6 +117,29 @@ void TileMap::RenderLayer(int layer, int cameraX =0, int cameraY=0) {
 	//exit(0);
 }
 
+
+void TileMap::Render() {
+		//tileSet->RenderTile(15,100,200);
+	for(int layer = 0; layer < this->mapDepth; layer++) {
+		int cameraX = 0; int cameraY = 0;
+		this->RenderLayer(layer, cameraX, cameraY);
+	}
+}	
+
+void TileMap::Update(float dt) {
+
+}
+
+bool TileMap::Is(std::string type) {
+	bool is = false;
+	if (type == "TileMap") {
+		is = true;
+	}
+
+	return is;
+}
+
+
 int TileMap::GetWidth() {
 	return mapWidth;
 }
@@ -127,25 +150,4 @@ int TileMap::GetHeight() {
 
 int TileMap::GetDepth() {
 	return mapDepth;
-}
-
-void TileMap::Update(float dt) {
-
-}
-
-void TileMap::Render() {
-		//tileSet->RenderTile(15,100,200);
-	for(int layer = 0; layer < this->mapDepth; layer++) {
-		int cameraX = 0; int cameraY = 0;
-		this->RenderLayer(layer, cameraX, cameraY);
-	}
-}	
-
-bool TileMap::Is(std::string type) {
-	bool is = false;
-	if (type == "TileMap") {
-		is = true;
-	}
-
-	return is;
 }

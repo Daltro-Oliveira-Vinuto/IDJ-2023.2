@@ -60,4 +60,4 @@ open_valgrind_txt:
 	subl valgrind.txt
 
 debug:
-	gdb  main.exe -ex "b 1"  -ex "r" -ex "layout src"  main.exe 
+	gdb  main.exe -ex "b 1"  -ex "r" -ex "layout src"  $(OBJ_NAME)

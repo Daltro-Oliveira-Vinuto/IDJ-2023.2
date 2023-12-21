@@ -23,7 +23,7 @@ public:
 
 	void RequestToQuit();
 
-	void Input();
+	//void Input();
 	void AddObject(int, int);
 
 private:

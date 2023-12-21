@@ -12,6 +12,7 @@
 #include "Game.h"
 #include "TileSet.h"
 #include "TileMap.h"
+#include "InputManager.h"
 
 const int max_time = 5000;
 int time_passed;
@@ -31,8 +32,6 @@ State::~State() {
 	soundsArray.clear();
 
 	objectArray.clear();
-
-
 
 }
 
@@ -56,24 +55,6 @@ void State::LoadAssets() {
 
 	objectArray.emplace_back(std::move( gameObjectWithTileMap) );
 
-	/*
-	SDL_Event e;
-	bool quit = false;
-	while (!quit) {
-		while(SDL_PollEvent(&e)!=0) {
-			if (e.type == SDL_KEYDOWN) {
-				if (e.key.keysym.sym == SDLK_ESCAPE) {
-					quit = true;
-				}
-			} else if (e.type == SDL_QUIT) {
-				quit = true;
-			}
-			tileSet->RenderTile(0, 100,100);
-			SDL_RenderPresent(Game::GetInstance("",0,0).GetRenderer());
-		} 
-	}
-	*/
-
 	time_passed = 0;
 }
 
@@ -85,8 +66,28 @@ void State::Update(float dt) {
 	}
 	*/
 
+	//this->Input();
 
-	this->Input();
+	//this->quitRequested = Game::GetInstance("",0,0).GetInput().QuitRequested();
+	this->quitRequested = InputManager::GetInstance().QuitRequested();
+
+
+	if (InputManager::GetInstance().IsKeyDown(ESCAPE_KEY)) {
+		this->quitRequested = true;
+	}
+
+	if (InputManager::GetInstance().KeyPress(SPACE_KEY)) {
+		//mouseX = Game::GetInstance("",0,0).GetInput().GetMouseX();
+		//mouseY = Game::GetInstance("",0,0).GetInput().GetMouseY();
+		int mouseX = InputManager::GetInstance().GetMouseX();
+		int mouseY = InputManager::GetInstance().GetMouseY();
+
+		Vec2 objPos = Vec2(100,0);
+		Vec2 vec2_cliqued(mouseX, mouseY);
+		objPos = Vec2( 100, 0 );
+		objPos = objPos.Rotate( -M_PI + M_PI*(rand() % 1001)/500.0 ) + vec2_cliqued;
+		this->AddObject((int)objPos.x, (int)objPos.y);
+	}
 
 	for(auto it = objectArray.begin(); it != objectArray.end(); ++it) {
 		(*it)->Update(1);
@@ -98,6 +99,7 @@ void State::Update(float dt) {
 			Component* componentAux = objectArray[i]->ReleaseComponent("Sound");
 			std::unique_ptr<Component> component = std::unique_ptr<Component>(componentAux);
 			soundsArray.emplace_back(std::move(component));
+
 			objectArray.erase(objectArray.begin()+i);
 		}
 	}
@@ -133,7 +135,7 @@ void State::RequestToQuit() {
 	quitRequested = true;
 }
 
-
+/*
 void State::Input() {
 	SDL_Event event;
 	int mouseX, mouseY;
@@ -190,6 +192,7 @@ void State::Input() {
 		}
 	}
 }
+*/
 
 void State::AddObject(int mouseX, int mouseY) {
 	std::unique_ptr<GameObject> newGameObject(new GameObject());

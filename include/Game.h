@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "State.h"
 #include "Resources.h"
+#include "InputManager.h"
 
 
 #ifndef GAME_H
@@ -23,6 +24,7 @@ public:
 	State& GetState();
 	SDL_Renderer* GetRenderer();
 	Resources& GetResources();
+	//InputManager& GetInput();
 
 	static int FPS;
 private:
@@ -34,6 +36,7 @@ private:
 	State* state = NULL;
 
 	Resources* resources = NULL;
+	//InputManager input;
 
 };
 
