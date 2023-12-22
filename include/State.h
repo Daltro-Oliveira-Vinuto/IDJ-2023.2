@@ -27,6 +27,10 @@ public:
 	State();
 	~State();
 
+	void Start();
+	//std::weak_ptr<GameObject> AddObject(GameObject* go);
+	//std::weak_ptr<GameObject> GetObject(GameObject* go);
+
 	void LoadAssets();
 	void Update(float);
 	void Render();

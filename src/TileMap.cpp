@@ -123,11 +123,14 @@ void TileMap::Render() {
 		int cameraX = 0; int cameraY = 0;
 
 		Vec2 vec2Position = Camera::pos;
-		//cameraX = vec2Position.x; 
-		//cameraY = vec2Position.y; 
-		int speed = 2;
-		cameraX = vec2Position.x + (vec2Position*layer*speed).x;
-		cameraY = vec2Position.y + (vec2Position*layer*speed).y;
+		
+		int parallaxSpeed = 1.5;
+		cameraX = vec2Position.x + 
+					(vec2Position*layer*parallaxSpeed).x;
+		cameraY = vec2Position.y + 
+					(vec2Position*layer*parallaxSpeed).y;
+
+		//cameraX = 0; cameraY = 0;
 		this->RenderLayer(layer, cameraX, cameraY);
 	}
 }	

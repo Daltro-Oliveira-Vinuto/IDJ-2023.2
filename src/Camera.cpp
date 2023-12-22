@@ -1,15 +1,6 @@
 #include "Camera.h"
 #include "Game.h"
 
-/*
-Camera::Camera() {
-
-}
-
-Camera::~Camera() {
-
-}
-*/
 
 void Camera::Follow(GameObject* newFocus) {
 	Camera::focus = newFocus;
@@ -21,20 +12,23 @@ void Camera::Unfollow() {
 
 void Camera::Update(float dt) {
 	if (nullptr == Camera::focus) {
-		Vec2 spaceVariation = Camera::speed*dt;
+		Vec2 spaceVariation = Camera::speed*(dt*300);
+		//printf("Space variation: (%.2lf, %.2lf)\n", spaceVariation.x, spaceVariation.y);
 
 		if (InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY)) {
-			Camera::pos.x+= spaceVariation.x;
+			Camera::pos.x = Camera::pos.x + spaceVariation.x;
 		}
 		if (InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY)) {
-			Camera::pos.x-= spaceVariation.x;
+			Camera::pos.x = Camera::pos.x - spaceVariation.x;
 		}
 		if (InputManager::GetInstance().IsKeyDown(UP_ARROW_KEY)) {
-			Camera::pos.y+= spaceVariation.y;
+			Camera::pos.y = Camera::pos.y + spaceVariation.y;
 		}
 		if (InputManager::GetInstance().IsKeyDown(DOWN_ARROW_KEY)) {
-			Camera::pos.y-= spaceVariation.y;	
+			Camera::pos.y = Camera::pos.y - spaceVariation.y;	
 		}
+
+		//printf("Camera::pos: (%.2lf, %.2lf)\n", Camera::pos.x, Camera::pos.y);
 	}
 	else {
 		Camera::pos.x = 
@@ -48,7 +42,7 @@ void Camera::Update(float dt) {
 }
 
 Vec2 Camera::pos = Vec2(0,0); // static variable
-Vec2 Camera::speed = Vec2(500,500); // static variable
+Vec2 Camera::speed = Vec2(1,1); // static variable
 GameObject* Camera::focus = nullptr; // static variable
 
 

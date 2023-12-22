@@ -51,8 +51,8 @@ void Sprite::Update(float dt) {
 void Sprite::Render() {
 	int x, y;
 	
-	x = associated.box.x;
-	y = associated.box.y;
+	x = associated.box.x + Camera::pos.x;
+	y = associated.box.y + Camera::pos.y;
 
 	Render(x, y);
 	

@@ -2,12 +2,15 @@
 #include "Camera.h"
 
 
-CameraFollower::CameraFollower(GameObject& go): Component(go) {
+CameraFollower::CameraFollower(GameObject& associated): Component(associated) {
 
 }
 
 void CameraFollower::Update(float dt) {
-	this->associated.box.AddVec2(Camera::pos);
+	associated.box.x = -Camera::pos.x;
+	associated.box.y = -Camera::pos.y;
+	
+	//printf("associated.box: %.2lf, %.2lf\n", associated.box.x, associated.box.y);
 }
 
 void CameraFollower::Render() {

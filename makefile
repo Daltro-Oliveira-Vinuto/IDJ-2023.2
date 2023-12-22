@@ -5,6 +5,9 @@ all: cls compile_and_assemble link load
 clear:
 	mv *.o ./trash
 
+clear_exe:
+	mv *.exe ./trash
+
 cls:
 	clear
 

@@ -24,6 +24,10 @@ State::~State() {
 
 }
 
+void State::Start() {
+
+}
+
 void State::LoadAssets() {
 		
 	std::unique_ptr<GameObject> newGameObject(new GameObject());
@@ -49,6 +53,7 @@ void State::LoadAssets() {
 }
 
 void State::Update(float dt) {
+	Camera::Update(dt);
 	//printf("delta time: %.3lf s\n", dt);
 
 	/*
@@ -69,7 +74,10 @@ void State::Update(float dt) {
 	
 	if (!this->quitRequested) {	
 
-		Camera::Update(dt);
+		if (InputManager::GetInstance().KeyPress(KEY_PRESS_a)) {
+			printf("Camera::pos: (%.2lf, %.2lf)\n", Camera::pos.x, Camera::pos.y);
+
+		}
 
 		if (InputManager::GetInstance().KeyPress(SPACE_KEY)) {
 			//mouseX = Game::GetInstance("",0,0).GetInput().GetMouseX();
@@ -79,10 +87,13 @@ void State::Update(float dt) {
 
 			Vec2 objPos = Vec2(100,0);
 			Vec2 vec2_cliqued(mouseX, mouseY);
-			vec2_cliqued = vec2_cliqued+ Camera::pos;
-			objPos = Vec2( 100, 0 );
-			objPos = objPos.Rotate( -M_PI + M_PI*(rand() % 1001)/500.0 ) + vec2_cliqued;
+			//printf("vec2_cliqued: (%.2lf, %.2lf)\n", vec2_cliqued.x, vec2_cliqued.y);
+		
+			objPos = objPos.Rotate( -M_PI + M_PI*(rand() % 1001)/500.0 );
+			objPos = vec2_cliqued + objPos;
+			objPos = objPos - Camera::pos;
 			this->AddObject((int)objPos.x, (int)objPos.y);
+			//printf("objPos: (%.2lf, %.2lf)\n", objPos.x, objPos.y);
 		}
 
 		for(auto it = objectArray.begin(); it != objectArray.end(); ++it) {
@@ -100,15 +111,16 @@ void State::Update(float dt) {
 			}
 		}
 
-		int delay = 1000.0/Game::FPS;
+	}
 
-		time_passed+= delay;
+	int delay = 1000.0/Game::FPS;
 
-		if (time_passed > max_time && soundsArray.size() != 0) {
-			time_passed = 0;
-			//soundsArray.era/se(soundsArray.end()-1);
-			soundsArray.pop_back();
-		}
+	time_passed+= delay;
+
+	if (time_passed > max_time && soundsArray.size() != 0) {
+		time_passed = 0;
+		//soundsArray.era/se(soundsArray.end()-1);
+		soundsArray.pop_back();
 	}
 }
 

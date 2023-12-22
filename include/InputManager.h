@@ -15,6 +15,8 @@
 
 #define LEFT_MOUSE_BUTTON SDL_BUTTON_LEFT
 
+#define KEY_PRESS_a SDLK_a
+
 class InputManager {
 public:
 	void Update();
