@@ -21,10 +21,11 @@ void Game::Render() {
 void Game::Run() {
 	//printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
 
-
 	int delay = 1000.0/FPS;
+
 	//InputManager::GetInstance().Update();
-	//state->Update(0);
+	//this->CalculaDeltaTime();
+	//state->Update(this->dt);
 	while(state->QuitRequested()==false) {
 		/*
 		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff,0xff);
@@ -41,7 +42,9 @@ void Game::Run() {
 		// UNFINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// step 3: State of the objects are updated
 
-		this->Update(0);
+		this->CalculaDeltaTime();
+
+		this->Update(this->dt);
 
 		// step 4: The objects are drawn in the screen
 		this->Render();
@@ -70,7 +73,6 @@ void Game::Run() {
 		}
 		*/
 	}
-
 }
 
 Game::Game(std::string title, int width, int height) {
@@ -134,6 +136,9 @@ Game::Game(std::string title, int width, int height) {
 		}
 	}
 
+	this->frameStart = 0;
+	this->dt = 0.0;
+
 	//printf("Game initialized!\n");
 }
 
@@ -191,3 +196,19 @@ InputManager& Game::GetInput() {
 	return input;
 }
 */
+
+float Game::GetDeltaTime() {
+	return this->dt;
+}
+
+void Game::CalculaDeltaTime() {
+	int frameAtual;
+
+	frameAtual = SDL_GetTicks();
+
+	this->dt = (frameAtual - this->frameStart)/1000.0;
+	this->frameStart = frameAtual;
+
+}
+
+

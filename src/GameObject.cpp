@@ -49,7 +49,7 @@ GameObject::~GameObject() {
 void GameObject::Update(float dt) {
 	for(unsigned int i = 0; i < components.size(); i++) {
 		Component* component = (Component*)(components[i].get());
-		component->Update(0);
+		component->Update(dt);
 	}
 }
 

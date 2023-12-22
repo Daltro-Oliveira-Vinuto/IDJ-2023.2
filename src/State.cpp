@@ -59,6 +59,7 @@ void State::LoadAssets() {
 }
 
 void State::Update(float dt) {
+	//printf("delta time: %.3lf s\n", dt);
 
 	/*
 	if (SDL_QuitRequested()) {
@@ -75,43 +76,46 @@ void State::Update(float dt) {
 	if (InputManager::GetInstance().IsKeyDown(ESCAPE_KEY)) {
 		this->quitRequested = true;
 	}
+	
+	if (!this->quitRequested) {	
 
-	if (InputManager::GetInstance().KeyPress(SPACE_KEY)) {
-		//mouseX = Game::GetInstance("",0,0).GetInput().GetMouseX();
-		//mouseY = Game::GetInstance("",0,0).GetInput().GetMouseY();
-		int mouseX = InputManager::GetInstance().GetMouseX();
-		int mouseY = InputManager::GetInstance().GetMouseY();
+		if (InputManager::GetInstance().KeyPress(SPACE_KEY)) {
+			//mouseX = Game::GetInstance("",0,0).GetInput().GetMouseX();
+			//mouseY = Game::GetInstance("",0,0).GetInput().GetMouseY();
+			int mouseX = InputManager::GetInstance().GetMouseX();
+			int mouseY = InputManager::GetInstance().GetMouseY();
 
-		Vec2 objPos = Vec2(100,0);
-		Vec2 vec2_cliqued(mouseX, mouseY);
-		objPos = Vec2( 100, 0 );
-		objPos = objPos.Rotate( -M_PI + M_PI*(rand() % 1001)/500.0 ) + vec2_cliqued;
-		this->AddObject((int)objPos.x, (int)objPos.y);
-	}
-
-	for(auto it = objectArray.begin(); it != objectArray.end(); ++it) {
-		(*it)->Update(1);
-	}
-
-	for(unsigned i = 0; i < objectArray.size(); i++) {
-		if ((objectArray[i])->IsDead()) {
-			
-			Component* componentAux = objectArray[i]->ReleaseComponent("Sound");
-			std::unique_ptr<Component> component = std::unique_ptr<Component>(componentAux);
-			soundsArray.emplace_back(std::move(component));
-
-			objectArray.erase(objectArray.begin()+i);
+			Vec2 objPos = Vec2(100,0);
+			Vec2 vec2_cliqued(mouseX, mouseY);
+			objPos = Vec2( 100, 0 );
+			objPos = objPos.Rotate( -M_PI + M_PI*(rand() % 1001)/500.0 ) + vec2_cliqued;
+			this->AddObject((int)objPos.x, (int)objPos.y);
 		}
-	}
 
-	int delay = 1000.0/Game::FPS;
+		for(auto it = objectArray.begin(); it != objectArray.end(); ++it) {
+			(*it)->Update(dt);
+		}
 
-	time_passed+= delay;
+		for(unsigned i = 0; i < objectArray.size(); i++) {
+			if ((objectArray[i])->IsDead()) {
+				
+				Component* componentAux = objectArray[i]->ReleaseComponent("Sound");
+				std::unique_ptr<Component> component = std::unique_ptr<Component>(componentAux);
+				soundsArray.emplace_back(std::move(component));
 
-	if (time_passed > max_time && soundsArray.size() != 0) {
-		time_passed = 0;
-		//soundsArray.era/se(soundsArray.end()-1);
-		soundsArray.pop_back();
+				objectArray.erase(objectArray.begin()+i);
+			}
+		}
+
+		int delay = 1000.0/Game::FPS;
+
+		time_passed+= delay;
+
+		if (time_passed > max_time && soundsArray.size() != 0) {
+			time_passed = 0;
+			//soundsArray.era/se(soundsArray.end()-1);
+			soundsArray.pop_back();
+		}
 	}
 }
 

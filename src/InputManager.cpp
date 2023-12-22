@@ -74,6 +74,10 @@ void InputManager::Update() {
 				//printf("Invalid event.type!\n");
 				break;
 		}
+
+		if (this->quitRequested) {
+			break;
+		}
 	}
 
 }

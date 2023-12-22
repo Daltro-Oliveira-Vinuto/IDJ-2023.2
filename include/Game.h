@@ -25,10 +25,12 @@ public:
 	SDL_Renderer* GetRenderer();
 	Resources& GetResources();
 	//InputManager& GetInput();
+	float GetDeltaTime();
 
 	static int FPS;
 private:
 	Game(std::string, int, int);
+	void CalculaDeltaTime();
 
 	static Game* instance;
 	SDL_Window* window = NULL;
@@ -37,6 +39,10 @@ private:
 
 	Resources* resources = NULL;
 	//InputManager input;
+
+	int frameStart;
+	float dt;
+
 
 };
 
