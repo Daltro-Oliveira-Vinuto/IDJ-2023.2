@@ -122,6 +122,10 @@ void TileMap::Render() {
 		//tileSet->RenderTile(15,100,200);
 	for(int layer = 0; layer < this->mapDepth; layer++) {
 		int cameraX = 0; int cameraY = 0;
+
+		Vec2 vec2Position = Camera::pos;
+		cameraX = vec2Position.x; //+ (Camera::speed.x*layer*2.0);
+		cameraY = vec2Position.y; // + (Camera::speed.x*layer*2.0);
 		this->RenderLayer(layer, cameraX, cameraY);
 	}
 }	

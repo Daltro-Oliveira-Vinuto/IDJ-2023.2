@@ -2,6 +2,7 @@
 #include "Sound.h"
 #include "Game.h"
 #include "InputManager.h"
+#include "Camera.h"
 
 
 Face::Face(GameObject& associated) : Component(associated) {
@@ -30,7 +31,10 @@ void Face::Update(float dt) {
 		int mouseY = InputManager::GetInstance().GetMouseY();
 
 
+		//Vec2 vec2_cliqued(mouseX, mouseY);
 		Vec2 vec2_cliqued(mouseX, mouseY);
+		vec2_cliqued = vec2_cliqued + Camera::pos;
+
 
 		if(associated.box.ContainVec2( vec2_cliqued) ) {
 			
@@ -42,6 +46,8 @@ void Face::Update(float dt) {
 }
 
 void Face::Render() {
+
+	this->associated.box.AddVec2(Camera::pos);
 
 }
 

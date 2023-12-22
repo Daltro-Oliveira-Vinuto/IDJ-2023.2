@@ -76,6 +76,8 @@ void Game::Run() {
 }
 
 Game::Game(std::string title, int width, int height) {
+	this->width = width;
+	this->height = height;
 
 	InputManager::GetInstance();
 
@@ -211,4 +213,10 @@ void Game::CalculaDeltaTime() {
 
 }
 
+int Game::GetWidth() {
+	return this->width;
+}
 
+int Game::GetHeight() {
+	return this->height;
+}

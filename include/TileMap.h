@@ -1,5 +1,6 @@
 
 #include <string>
+#include "Camera.h"
 #include "GameObject.h"
 #include "TileSet.h"
 

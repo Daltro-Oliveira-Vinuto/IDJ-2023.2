@@ -1,4 +1,5 @@
 #include <unordered_map>
+#include "SDL.h"
 
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H

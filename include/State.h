@@ -1,10 +1,21 @@
 #include <memory>
 #include <iostream>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
 
 #include "GameObject.h"
-
 #include "Music.h"
+#include "SDL.h"
+#include "Vec2.h"
+#include "Rect.h"
+#include "Sprite.h"
+#include "Sound.h"
+#include "Face.h"
 #include "TileSet.h"
+#include "TileMap.h"
+#include "InputManager.h"
+#include "Camera.h"
 
 
 #ifndef STATE_H

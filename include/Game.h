@@ -28,8 +28,14 @@ public:
 	float GetDeltaTime();
 
 	static int FPS;
+
+	int GetWidth();
+	int GetHeight();
+	
 private:
 	Game(std::string, int, int);
+	int width;
+	int height;
 	void CalculaDeltaTime();
 
 	static Game* instance;

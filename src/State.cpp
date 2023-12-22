@@ -1,18 +1,7 @@
-#include <cmath>
-#include <cstdlib>
-#include <ctime>
-
 #include "State.h"
-#include "SDL.h"
-#include "Vec2.h"
-#include "Rect.h"
-#include "Sprite.h"
-#include "Sound.h"
-#include "Face.h"
 #include "Game.h"
-#include "TileSet.h"
-#include "TileMap.h"
-#include "InputManager.h"
+#include "Camera.h"
+#include "CameraFollower.h"
 
 const int max_time = 5000;
 int time_passed;
@@ -43,12 +32,13 @@ void State::LoadAssets() {
 	newSprite->SetClip(clip);
 	newGameObject->box = clip;
 	newGameObject->AddComponent(std::move(newSprite));
+	std::unique_ptr<CameraFollower> cameraFollower = std::make_unique<CameraFollower>(*newGameObject);
+	newGameObject->AddComponent(std::move(cameraFollower));
 	objectArray.emplace_back(std::move(newGameObject));
 
 
 	std::unique_ptr<GameObject> gameObjectWithTileMap = std::make_unique<GameObject>();
 	TileSet* tileSet = new TileSet(64,64,"assets/img/tileset.png");
-	//std::unique_ptr<TileSet> tileSet(new TileSet(64,64, "assets/img/tileset.png"));
 	std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(*gameObjectWithTileMap,"assets/map/tileMap.txt", tileSet);
 	gameObjectWithTileMap->box = Rect(0,0,tileSet->GetTileWidth(), tileSet->GetTileHeight());
 	gameObjectWithTileMap->AddComponent(std::move(tileMap));
@@ -79,6 +69,8 @@ void State::Update(float dt) {
 	
 	if (!this->quitRequested) {	
 
+		Camera::Update(dt);
+
 		if (InputManager::GetInstance().KeyPress(SPACE_KEY)) {
 			//mouseX = Game::GetInstance("",0,0).GetInput().GetMouseX();
 			//mouseY = Game::GetInstance("",0,0).GetInput().GetMouseY();
@@ -87,6 +79,7 @@ void State::Update(float dt) {
 
 			Vec2 objPos = Vec2(100,0);
 			Vec2 vec2_cliqued(mouseX, mouseY);
+			vec2_cliqued = vec2_cliqued+ Camera::pos;
 			objPos = Vec2( 100, 0 );
 			objPos = objPos.Rotate( -M_PI + M_PI*(rand() % 1001)/500.0 ) + vec2_cliqued;
 			this->AddObject((int)objPos.x, (int)objPos.y);

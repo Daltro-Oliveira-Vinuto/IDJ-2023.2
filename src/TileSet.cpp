@@ -26,7 +26,7 @@ TileSet::TileSet(int tileWidth, int tileHeight, std::string file) {
 
 void TileSet::RenderTile(unsigned index, float x, float y) {
 	if (index < 0 ||  index >= numberOfTiles) {
-		printf("Error! Index invalid!\n");
+		//printf("Error! Index invalid!\n");
 	} else {
 		//int clip_x = (index-(index/cols)*cols)*tileWidth;
 		//int clip_y = (index/cols)*tileHeight;
