@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "TileSet.h"
+#include "Vec2.h"
 
 #ifndef TILEMAP_H
 #define TILEMAP_H

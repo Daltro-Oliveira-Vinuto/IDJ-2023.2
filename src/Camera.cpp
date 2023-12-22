@@ -24,16 +24,16 @@ void Camera::Update(float dt) {
 		Vec2 spaceVariation = Camera::speed*dt;
 
 		if (InputManager::GetInstance().IsKeyDown(LEFT_ARROW_KEY)) {
-			Camera::pos.x-= spaceVariation.x;
-		}
-		if (InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY)) {
 			Camera::pos.x+= spaceVariation.x;
 		}
+		if (InputManager::GetInstance().IsKeyDown(RIGHT_ARROW_KEY)) {
+			Camera::pos.x-= spaceVariation.x;
+		}
 		if (InputManager::GetInstance().IsKeyDown(UP_ARROW_KEY)) {
-			Camera::pos.y-= spaceVariation.y;
+			Camera::pos.y+= spaceVariation.y;
 		}
 		if (InputManager::GetInstance().IsKeyDown(DOWN_ARROW_KEY)) {
-			Camera::pos.y+= spaceVariation.y;	
+			Camera::pos.y-= spaceVariation.y;	
 		}
 	}
 	else {
@@ -48,7 +48,7 @@ void Camera::Update(float dt) {
 }
 
 Vec2 Camera::pos = Vec2(0,0); // static variable
-Vec2 Camera::speed = Vec2(10,10); // static variable
+Vec2 Camera::speed = Vec2(500,500); // static variable
 GameObject* Camera::focus = nullptr; // static variable
 
 

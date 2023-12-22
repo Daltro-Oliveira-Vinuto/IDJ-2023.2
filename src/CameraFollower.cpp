@@ -7,8 +7,7 @@ CameraFollower::CameraFollower(GameObject& go): Component(go) {
 }
 
 void CameraFollower::Update(float dt) {
-	this->associated.box.x = Camera::pos.x * dt;
-	this->associated.box.y = Camera::pos.y * dt;
+	this->associated.box.AddVec2(Camera::pos);
 }
 
 void CameraFollower::Render() {

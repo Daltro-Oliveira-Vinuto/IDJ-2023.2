@@ -14,7 +14,7 @@
 
 int main(int argc, char **argv) {
 	const int SCREEN_WIDTH = 1024, SCREEN_HEIGHT = 600;
-    
+    //const int SCREEN_WIDTH = 1920, SCREEN_HEIGHT = 1080;
 
     #ifdef DEBUG_MODE // ----------------------------------------------------------------
 	Vec2 v1(3, -2), v2(1, 7	);

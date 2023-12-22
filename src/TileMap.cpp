@@ -76,6 +76,7 @@ void TileMap::Load(std::string file) {
 	}
 	printf("\n");
 	*/
+
 }
 
 void TileMap::SetTileSet(TileSet* tileSet) {
@@ -98,18 +99,16 @@ void TileMap::RenderLayer(int layer, int cameraX =0, int cameraY=0) {
 
 	for(int i = 0; i < this->mapHeight; i++) {
 		for(int j = 0; j < this->mapWidth; j++) {
-			int index;
-			int x;
-			int y;
-			x = j+cameraX;
-			y = i+cameraY;
-			index = this->At(x, y, layer);
-			//printf("%d ", index);
-			int pos_x, pos_y;
-			pos_x = j*(tileSet->GetTileWidth());
-			pos_y = i*(tileSet->GetTileHeight());
-			if (index != -1) {
 
+			int x = j;
+			int y = i;
+			int index = this->At(x, y, layer);
+			//printf("%d ", index);
+			int pos_x = j*(tileSet->GetTileWidth());
+			int pos_y = i*(tileSet->GetTileHeight());
+			if (index != -1) {
+				pos_x+= cameraX;
+				pos_y+= cameraY;
 				tileSet->RenderTile(index,pos_x, pos_y);
 			}
 		}
@@ -124,8 +123,11 @@ void TileMap::Render() {
 		int cameraX = 0; int cameraY = 0;
 
 		Vec2 vec2Position = Camera::pos;
-		cameraX = vec2Position.x; //+ (Camera::speed.x*layer*2.0);
-		cameraY = vec2Position.y; // + (Camera::speed.x*layer*2.0);
+		//cameraX = vec2Position.x; 
+		//cameraY = vec2Position.y; 
+		int speed = 2;
+		cameraX = vec2Position.x + (vec2Position*layer*speed).x;
+		cameraY = vec2Position.y + (vec2Position*layer*speed).y;
 		this->RenderLayer(layer, cameraX, cameraY);
 	}
 }	
@@ -138,6 +140,8 @@ bool TileMap::Is(std::string type) {
 	bool is = false;
 	if (type == "TileMap") {
 		is = true;
+	} else {
+		is = false;
 	}
 
 	return is;
@@ -145,13 +149,13 @@ bool TileMap::Is(std::string type) {
 
 
 int TileMap::GetWidth() {
-	return mapWidth;
+	return this->mapWidth;
 }
 
 int TileMap::GetHeight() {
-	return mapHeight;
+	return this->mapHeight;
 }
 
 int TileMap::GetDepth() {
-	return mapDepth;
+	return this->mapDepth;
 }
