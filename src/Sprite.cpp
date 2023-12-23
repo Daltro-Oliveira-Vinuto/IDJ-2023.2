@@ -60,8 +60,22 @@ void Sprite::Render() {
 
 void Sprite::Render(int x, int y) {
 	SDL_Rect destine_rect = {x, y, clipRect.w, clipRect.h};
-
+	/*
 	if (SDL_RenderCopy(Game::GetInstance("",0,0).GetRenderer(), texture, &clipRect, &destine_rect) != 0) {
+		printf("Error to render, %s\n", SDL_GetError());
+	}
+	*/
+	SDL_Point* center = nullptr;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+
+
+	if (SDL_RenderCopyEx(Game::GetInstance("",0,0).GetRenderer(), 
+				texture, 
+				&clipRect, 
+				&destine_rect,
+				associated.angleDeg,
+				center,
+				flip) != 0) {
 		printf("Error to render, %s\n", SDL_GetError());
 	} 
 }
@@ -95,3 +109,25 @@ bool Sprite::IsOpen() {
 
 	return open;
 }
+
+void Sprite::SetScale(float scaleX, float scaleY) {
+	this->scale = Vec2(scaleX, scaleY);
+}
+
+Vec2 Sprite::GetScale() {
+
+	return this->scale;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

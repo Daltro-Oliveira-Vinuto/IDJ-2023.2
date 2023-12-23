@@ -7,11 +7,12 @@ const int max_time = 5000;
 int time_passed;
 
 State::State():  music("./assets/audio/stageState.ogg") {
-	quitRequested = false;
-	//this->LoadAssets(renderer);
+	this->quitRequested = false;
+	this->started = false;
+
 	music.Play(-1);
 
-	this->LoadAssets();
+	//this->LoadAssets();
 
 	//printf("State initialized!\n");
 }
@@ -26,6 +27,51 @@ State::~State() {
 
 void State::Start() {
 
+	this->LoadAssets();
+
+	std::vector< std::shared_ptr<GameObject>>::iterator it;
+
+	for(it = this->objectArray.begin(); it != this->objectArray.end(); it++) {
+		(*it)->Start();
+	}
+
+	this->started = true;
+}
+
+
+std::weak_ptr<GameObject> State::AddObject(GameObject* newObject) {
+	
+	std::shared_ptr<GameObject> newObjectShared(newObject);
+	
+	this->objectArray.push_back(newObjectShared);
+
+	if (this->started) {
+		newObjectShared->Start();
+	}
+	
+	std::weak_ptr<GameObject> newObjectWeak =  newObjectShared;
+
+	return newObjectWeak;
+	
+}
+
+std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* desiredObject) {
+	
+	std::weak_ptr<GameObject> desiredWeakObject;
+
+	std::vector< std::shared_ptr<GameObject> >::iterator it;
+
+	for(it = this->objectArray.begin(); it != this->objectArray.end(); it++) {
+		GameObject* someObject = (*it).get();
+
+		if (someObject == desiredObject) {
+			desiredWeakObject = (*it);
+			break;
+		}
+	}
+
+	return desiredWeakObject;
+	
 }
 
 void State::LoadAssets() {
@@ -38,6 +84,7 @@ void State::LoadAssets() {
 	newGameObject->AddComponent(std::move(newSprite));
 	std::unique_ptr<CameraFollower> cameraFollower = std::make_unique<CameraFollower>(*newGameObject);
 	newGameObject->AddComponent(std::move(cameraFollower));
+
 	objectArray.emplace_back(std::move(newGameObject));
 
 
@@ -49,8 +96,19 @@ void State::LoadAssets() {
 
 	objectArray.emplace_back(std::move( gameObjectWithTileMap) );
 
+
+	std::shared_ptr<GameObject> alienGameObject = 
+										std::make_shared<GameObject>();
+	int numberOfMinions = 2;
+	std::unique_ptr<Alien> alienComponent =
+					 std::make_unique<Alien>(*alienGameObject,numberOfMinions);
+	alienGameObject->AddComponent(std::move(alienComponent));
+
+	objectArray.push_back(alienGameObject);
+
 	time_passed = 0;
 }
+
 
 void State::Update(float dt) {
 	Camera::Update(dt);
@@ -79,6 +137,7 @@ void State::Update(float dt) {
 
 		}
 
+		/*
 		if (InputManager::GetInstance().KeyPress(SPACE_KEY)) {
 			//mouseX = Game::GetInstance("",0,0).GetInput().GetMouseX();
 			//mouseY = Game::GetInstance("",0,0).GetInput().GetMouseY();
@@ -95,6 +154,7 @@ void State::Update(float dt) {
 			this->AddObject((int)objPos.x, (int)objPos.y);
 			//printf("objPos: (%.2lf, %.2lf)\n", objPos.x, objPos.y);
 		}
+		*/
 
 		for(auto it = objectArray.begin(); it != objectArray.end(); ++it) {
 			(*it)->Update(dt);
@@ -203,6 +263,7 @@ void State::Input() {
 }
 */
 
+/*
 void State::AddObject(int mouseX, int mouseY) {
 	std::unique_ptr<GameObject> newGameObject(new GameObject());
 
@@ -225,3 +286,5 @@ void State::AddObject(int mouseX, int mouseY) {
 	objectArray.emplace_back(std::move(newGameObject));
 
 }
+
+*/

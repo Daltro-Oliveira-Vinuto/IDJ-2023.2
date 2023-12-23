@@ -26,6 +26,8 @@ void Game::Run() {
 	//InputManager::GetInstance().Update();
 	//this->CalculaDeltaTime();
 	//state->Update(this->dt);
+	state->Start();
+	
 	while(state->QuitRequested()==false) {
 		/*
 		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff,0xff);

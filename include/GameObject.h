@@ -9,11 +9,11 @@
 
 class GameObject {
 public:
-	explicit GameObject();
+	GameObject();
 	~GameObject();
-	GameObject(const GameObject&) = delete;
-	const GameObject& operator=(const GameObject&) = delete;
-
+	//GameObject(const GameObject&) = delete;
+	//const GameObject& operator=(const GameObject&) = delete;
+	void Start();
 
 	void Update(float);
 	void Render();
@@ -25,10 +25,13 @@ public:
 	Component* ReleaseComponent(std::string);
 
 	Rect box;
-
+	bool started;
+	double angleDeg;
+	
 private:
 	std::vector<std::unique_ptr<Component>> components;
 	bool isDead;
+
 };
 
 

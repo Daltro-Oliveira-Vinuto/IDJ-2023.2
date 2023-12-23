@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "GameObject.h"
 #include "Rect.h"
+#include "Vec2.h"
 
 #ifndef SPRITE_H
 #define SPRITE_H
@@ -28,12 +29,15 @@ public:
 
 	bool IsOpen();
 
+	void SetScale(float scaleX, float scaleY);
+	Vec2 GetScale();
+
 private:
 	SDL_Texture* texture = NULL;
 	int width;
 	int height;
 	SDL_Rect clipRect;
-
+	Vec2 scale;
 };
 
 

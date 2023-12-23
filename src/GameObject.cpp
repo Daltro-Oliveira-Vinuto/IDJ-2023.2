@@ -8,7 +8,9 @@
 
 
 GameObject::GameObject() {
-	isDead = false;
+	this->isDead = false;
+	this->started = false;
+	this->angleDeg = 0;
 }
 
 GameObject::~GameObject() {
@@ -43,7 +45,14 @@ GameObject::~GameObject() {
 
 	components.clear();
 
+}
 
+void GameObject::Start() {
+	printf("Game object started!\n");
+	for(unsigned i = 0; i < this->components.size(); i++) {
+		this->components[i]->Start();
+	}
+	this->started = true;
 }
 
 void GameObject::Update(float dt) {
@@ -74,7 +83,12 @@ void GameObject::RequestDelete() {
 }
 
 void GameObject::AddComponent(std::unique_ptr<Component> component) {
+
+	if (!(component->started)) {
+		component->Start();
+	}
 	components.emplace_back(std::move(component));
+
 }
 
 void GameObject::RemoveComponent(Component* component) {

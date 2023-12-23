@@ -16,6 +16,7 @@
 #include "TileMap.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "Alien.h"
 
 
 #ifndef STATE_H
@@ -28,8 +29,8 @@ public:
 	~State();
 
 	void Start();
-	//std::weak_ptr<GameObject> AddObject(GameObject* go);
-	//std::weak_ptr<GameObject> GetObject(GameObject* go);
+	std::weak_ptr<GameObject> AddObject(GameObject*);
+	std::weak_ptr<GameObject> GetObjectPtr(GameObject*);
 
 	void LoadAssets();
 	void Update(float);
@@ -39,15 +40,18 @@ public:
 	void RequestToQuit();
 
 	//void Input();
-	void AddObject(int, int);
+	//void AddObject(int, int);
 
 private:
 	Music music;
 	bool quitRequested;	
 
-	std::vector< std::unique_ptr<GameObject> >	objectArray;
+	//std::vector< std::unique_ptr<GameObject> >  objectArray;
+	std::vector< std::shared_ptr<GameObject> > objectArray;
+
 	std::vector< std::unique_ptr<Component> > soundsArray;
 
+	bool started;
 };
 
 #endif
