@@ -26,6 +26,12 @@ void Game::Run() {
 	//InputManager::GetInstance().Update();
 	//this->CalculaDeltaTime();
 	//state->Update(this->dt);
+	
+	if (state == NULL) {
+		printf("State not started!\n");
+		exit(0);
+	}
+	
 	state->Start();
 	
 	while(state->QuitRequested()==false) {
@@ -83,6 +89,9 @@ Game::Game(std::string title, int width, int height) {
 
 	InputManager::GetInstance();
 
+	this->resources = new Resources();
+	//printf("address of resources allocated: %p\n", resources);
+
 	//printf("Object Game started!\n");
 	FPS = 30;
 	if (instance != NULL) {
@@ -122,8 +131,6 @@ Game::Game(std::string title, int width, int height) {
 							if (renderer == NULL) {
 								printf("Renderer not created! Error: %s\n", SDL_GetError());
 							} else {
-								resources = new Resources();
-								//printf("address of resources allocated: %p\n", resources);
 
 								//printf("Address of rendered created: %p\n", renderer);
 								// At this point window and renderer had been successfully created

@@ -5,8 +5,11 @@ Rect::Rect() {
 	x = 0; y = 0; w = 0; h = 0;
 }
 
-Rect::Rect(int x, int y, int w, int h) {
-	this->x = x; this->y =y; this-> w = w; this->h = h;
+Rect::Rect(float x, float y, float w, float h) {
+	this->x = x;
+	this->y = y;
+	this->w = w;
+	this->h = h;
 }
 
 Rect::~Rect() {
@@ -35,7 +38,7 @@ Rect Rect::AddVec2(const Vec2& vec2) {
 }
 
 Vec2 Rect::GetCenter() {
-	Vec2 v_result(x+w/2.0, y-h/2.0);
+	Vec2 v_result(x+w/2.0, y+h/2.0);
 
 	return v_result;
 }

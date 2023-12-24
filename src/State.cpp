@@ -43,9 +43,9 @@ std::weak_ptr<GameObject> State::AddObject(GameObject* newObject) {
 	
 	std::shared_ptr<GameObject> newObjectShared(newObject);
 	
-	this->objectArray.push_back(newObjectShared);
+	this->objectArray.emplace_back(std::move(newObjectShared) );
 
-	if (this->started) {
+	if (this->started && newObjectShared != nullptr ) {
 		newObjectShared->Start();
 	}
 	
@@ -56,8 +56,8 @@ std::weak_ptr<GameObject> State::AddObject(GameObject* newObject) {
 }
 
 std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* desiredObject) {
-	
 	std::weak_ptr<GameObject> desiredWeakObject;
+	
 
 	std::vector< std::shared_ptr<GameObject> >::iterator it;
 
@@ -65,7 +65,9 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* desiredObject) {
 		GameObject* someObject = (*it).get();
 
 		if (someObject == desiredObject) {
-			desiredWeakObject = (*it);
+			std::weak_ptr<GameObject> desiredWeakObjectFound( (*it) );
+			
+			return desiredWeakObjectFound;
 			break;
 		}
 	}
@@ -104,7 +106,7 @@ void State::LoadAssets() {
 					 std::make_unique<Alien>(*alienGameObject,numberOfMinions);
 	alienGameObject->AddComponent(std::move(alienComponent));
 
-	objectArray.push_back(alienGameObject);
+	objectArray.emplace_back(std::move(alienGameObject));
 
 	time_passed = 0;
 }

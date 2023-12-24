@@ -17,7 +17,7 @@ Resources::~Resources() {
 SDL_Texture* Resources::GetImage(std::string file) {
 	std::unordered_map<std::string, SDL_Texture*>::iterator it;
 
-	it = imageTable.find(file);
+	it = this->imageTable.find(file);
 	if (it == imageTable.end()) {
 
 		SDL_Texture* new_texture = NULL;
@@ -29,11 +29,15 @@ SDL_Texture* Resources::GetImage(std::string file) {
 			printf("Error to load texture! %s\n", SDL_GetError());
 		} else {
 			imageTable[file] = new_texture;
-		}
-	} 
+			return imageTable.find(file)->second;
+		}	
+	} else {
 
-	return imageTable.find(file)->second;
+		return imageTable.find(file)->second;
+	}
 
+	printf("Error! to access image Table!\n");
+	return NULL;
 }
 
 Mix_Music* Resources::GetMusic(std::string file) {
@@ -52,11 +56,17 @@ Mix_Music* Resources::GetMusic(std::string file) {
 			printf("Music not opened!, Error: %s\n", Mix_GetError());
 		} else {
 			musicTable[file] = music;
+			return musicTable.find(file)->second;
 		}
 
+	} else {
+
+		return musicTable.find(file)->second;
 	}
 
-	return musicTable.find(file)->second;
+	printf("Error! to acess music table!");
+
+	return NULL;
 
 }
 

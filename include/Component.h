@@ -16,7 +16,7 @@ public:
 	virtual void Update(float) = 0; // virtual pure
 	virtual void Render() = 0; // virtual pure
 	virtual bool Is(std::string) = 0; // virtual pure;
-	virtual void Start() {printf("Component started!\n");}; // empy body
+	virtual void Start() {}; // empy body
 	bool started = false;
 protected:
 	GameObject& associated;

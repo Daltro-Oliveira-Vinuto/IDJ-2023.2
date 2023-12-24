@@ -1,12 +1,16 @@
+# do ulimit -c unlimited 
 run: cls compile_and_assemble link  load #load_on_valgrind open_valgrind_txt
 
 all: cls compile_and_assemble link load 
 
 clear:
-	mv *.o ./trash
+	mv *.o new_core.* ./trash 
 
 clear_exe:
 	mv *.exe ./trash
+
+clear_cores:
+	mv new_core.* ./trash
 
 cls:
 	clear
@@ -63,4 +67,4 @@ open_valgrind_txt:
 	subl valgrind.txt
 
 debug:
-	gdb  main.exe -ex "b 1"  -ex "r" -ex "layout src"  $(OBJ_NAME)
+	gdb  main.exe -ex "b 1"  -ex "r" -ex 'set disassembly-flavor intel' -ex "layout src"  $(OBJ_NAME)

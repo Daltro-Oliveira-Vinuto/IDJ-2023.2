@@ -40,7 +40,7 @@ void Sprite::Open(std::string file) {
 }
 
 void Sprite::SetClip(const Rect& clip) {
-	clipRect = {clip.x, clip.y, clip.w, clip.h};
+	clipRect = {int(clip.x), int(clip.y), int(clip.w), int(clip.h)};
 
 }
 
