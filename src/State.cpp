@@ -11,7 +11,6 @@ State::State():  music("./assets/audio/stageState.ogg") {
 	this->started = false;
 
 	music.Play(-1);
-
 	//this->LoadAssets();
 
 	//printf("State initialized!\n");
@@ -29,11 +28,10 @@ void State::Start() {
 
 	this->LoadAssets();
 
-	std::vector< std::shared_ptr<GameObject>>::iterator it =
-												this->objectArray.begin();
-
 	for(unsigned i = 0; i < this->objectArray.size(); i++) {
-		(*(it+i))->Start();
+		if (! (*(objectArray.begin()+i))->started ) {
+			(*(objectArray.begin()+i))->Start();
+		}
 		
 	}
 
@@ -43,13 +41,9 @@ void State::Start() {
 
 std::weak_ptr<GameObject> State::AddObject(GameObject* newObject) {
 	
-	std::cout << "newObject: "<< newObject << std::endl;
-
 	std::shared_ptr<GameObject> newObjectShared(newObject);
 	
-	std::cout << "newObjectShared.get(): " << newObjectShared.get() << std::endl;
-	
-	this->objectArray.emplace_back(std::move(newObjectShared) );
+	this->objectArray.push_back( newObjectShared );
 
 	std::weak_ptr<GameObject> newObjectWeak =  newObjectShared;
 
@@ -61,14 +55,14 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* desiredObject) {
 	std::weak_ptr<GameObject> desiredWeakObject;
 	
 
-	std::vector< std::shared_ptr<GameObject> >::iterator it;
 
-	for(it = this->objectArray.begin(); it != this->objectArray.end(); ++it) {
-		GameObject* someObject = (*it).get();
+	for(unsigned i = 0; i < this->objectArray.size(); i++) {
+		GameObject* someObject = (*(this->objectArray.begin()+i)).get();
 		//std::cout << "someObject: " << someObject << ",  desiredObject: " << desiredObject << std::endl;
 		if (someObject == desiredObject) {
 			//std::cout << "found address: " << someObject << std::endl;
-			std::weak_ptr<GameObject> desiredWeakObjectFound( (*it) );
+			std::weak_ptr<GameObject> desiredWeakObjectFound(
+										 (*(this->objectArray.begin()+i)) );
 			
 			return desiredWeakObjectFound;
 		}
@@ -187,12 +181,10 @@ void State::Update(float dt) {
 		}
 		*/
 
-	std::vector< std::shared_ptr<GameObject>>::iterator it =
-												this->objectArray.begin();
-	for(unsigned i = 0; i < this->objectArray.size(); i++) {
-		(*(it+i))->Update(dt);
-		
-	}
+		for(unsigned i = 0; i < this->objectArray.size(); i++) {
+			(*(this->objectArray.begin()+i))->Update(dt);
+			
+		}
 
 		for(unsigned i = 0; i < objectArray.size(); i++) {
 			if ((objectArray[i])->IsDead()) {
@@ -223,10 +215,8 @@ void State::Render() {
 	//bg.SetClip(0, 0, bg.GetWidth(), bg.GetHeight());
 	//bg.Render( 0, 0);
 
-	std::vector< std::shared_ptr<GameObject>>::iterator it =
-												this->objectArray.begin();
 	for(unsigned i = 0; i < this->objectArray.size(); i++) {
-		(*(it+i))->Render();
+		(*(this->objectArray.begin()+i))->Render();
 		
 	}
 

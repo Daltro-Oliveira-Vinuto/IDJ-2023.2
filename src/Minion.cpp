@@ -43,7 +43,13 @@ Minion::Minion(GameObject& associated,
 
 			Vec2 vec2Rotated(x,y);
 
+			//std::cout << "before rotation: "<<
+			//		vec2Rotated << std::endl;
+
 			vec2Rotated = vec2Rotated.RotateInDegrees(arcOffsetDeg);
+
+			//std::cout << "after rotated: " << vec2Rotated <<
+			//	std::endl;
 
 			x = vec2Rotated.x; y = vec2Rotated.y;
 
@@ -64,6 +70,10 @@ void Minion::Update(float dt) {
 	associated.box.y = alienCenter.box.y - alienCenter.box.h/2.0;
 
 	associated.angleDeg+= 20*dt;
+}
+
+void Minion::Start() {
+	this->started = true;
 }
 
 void Minion::Render() {

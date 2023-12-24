@@ -45,7 +45,7 @@ private:
 	int hp;
 
 	std::vector< std::weak_ptr<GameObject> > minionArray;
-
+	int numberOfMinions;
 };
 
 #endif

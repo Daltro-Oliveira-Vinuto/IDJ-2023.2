@@ -16,6 +16,7 @@ public:
 	void Update(float);
 	void Render();
 	bool Is(std::string);
+	void Start();
 	void Shoot(Vec2 target);
 
 private:

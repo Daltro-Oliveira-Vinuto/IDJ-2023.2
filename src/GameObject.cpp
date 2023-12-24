@@ -49,19 +49,21 @@ GameObject::~GameObject() {
 
 void GameObject::Start() {
 	//printf("Game object started!\n");
-	std::vector< std::unique_ptr<Component> >::iterator it = 
-													components.begin();
+	//std::vector< std::unique_ptr<Component> >::iterator it = components.begin();
+	
 	for(unsigned i = 0; i < this->components.size(); i++) {
-		(*(it + i))->Start();
+		if ( ! (*(this->components.begin()+i))->started ){ 
+			(*(this->components.begin() + i))->Start();
+		}
+
 	}
 	this->started = true;
 }
 
 void GameObject::Update(float dt) {
-	std::vector< std::unique_ptr<Component> >::iterator it =
-													 components.begin();
+	
 	for(unsigned i = 0; i < this->components.size(); i++) {
-		(*(it + i))->Update(dt);
+		(*(this->components.begin()+ i))->Update(dt);
 	}
 }
 
@@ -71,10 +73,9 @@ void GameObject::Render() {
 		(*it)->Render();
 	}
 	*/
-	std::vector< std::unique_ptr<Component> >::iterator it = 
-														components.begin();
+	
 	for(unsigned i = 0; i < this->components.size(); i++) {
-		(*(it + i))->Render();
+		(*( this->components.begin() + i))->Render();
 	}
 }
 

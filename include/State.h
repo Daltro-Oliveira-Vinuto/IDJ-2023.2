@@ -42,8 +42,6 @@ public:
 	//void Input();
 	//void AddObject(int, int);
 
-	// SHOULD BE PRIVATE!!!!!!!!!!!!
-	std::vector< std::shared_ptr<GameObject> > objectArray;
 
 
 private:
@@ -54,6 +52,7 @@ private:
 	//std::vector< std::shared_ptr<GameObject> > objectArray;
 
 	std::vector< std::unique_ptr<Component> > soundsArray;
+	std::vector< std::shared_ptr<GameObject> > objectArray;
 
 	bool started;
 };
