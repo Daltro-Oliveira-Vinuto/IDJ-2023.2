@@ -35,13 +35,13 @@ void Sprite::Open(std::string file) {
 		printf("Texture not loaded! Error: %s\n", SDL_GetError());
 	} else {
 		SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-		clipRect = {0,0, width, height};
+		this->clipSource = {0,0, width, height};
 	}
 }
 
 void Sprite::SetClip(const Rect& clip) {
-	clipRect = {int(clip.x), int(clip.y), int(clip.w), int(clip.h)};
-
+	this->clipSource = {int(clip.x), int(clip.y), int(clip.w), int(clip.h)};
+	this->clipDestine = this->clipSource;
 }
 
 void Sprite::Update(float dt) {
@@ -59,7 +59,7 @@ void Sprite::Render() {
 }
 
 void Sprite::Render(int x, int y) {
-	SDL_Rect destine_rect = {x, y, clipRect.w, clipRect.h};
+	SDL_Rect rect_destine = {x, y, clipDestine.w, clipDestine.h};
 	/*
 	if (SDL_RenderCopy(Game::GetInstance("",0,0).GetRenderer(), texture, &clipRect, &destine_rect) != 0) {
 		printf("Error to render, %s\n", SDL_GetError());
@@ -70,9 +70,9 @@ void Sprite::Render(int x, int y) {
 
 
 	if (SDL_RenderCopyEx(Game::GetInstance("",0,0).GetRenderer(), 
-				texture, 
-				&clipRect, 
-				&destine_rect,
+				this->texture, 
+				&clipSource, 
+				&rect_destine,
 				associated.angleDeg,
 				center,
 				flip) != 0) {
@@ -120,7 +120,13 @@ Vec2 Sprite::GetScale() {
 }
 
 
-
+void Sprite::SetClipDest(const Rect& rect) {
+	this->clipDestine = {
+			int(rect.x), 
+			int(rect.y), 
+			int(rect.w),
+			int(rect.h)};
+}
 
 
 

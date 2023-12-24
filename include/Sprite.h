@@ -32,12 +32,15 @@ public:
 	void SetScale(float scaleX, float scaleY);
 	Vec2 GetScale();
 
+	void SetClipDest(const Rect& rect);
+
 private:
 	SDL_Texture* texture = NULL;
 	int width;
 	int height;
-	SDL_Rect clipRect;
+	SDL_Rect clipSource;
 	Vec2 scale;
+	SDL_Rect clipDestine;
 };
 
 

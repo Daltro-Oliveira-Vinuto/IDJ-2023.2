@@ -53,6 +53,7 @@ void Alien::Start() {
 
 	//std::cout << "&alienGO in Alien: " << auxGO << std::endl;
 
+	// add first minion =================================================
 	std::weak_ptr<GameObject> alienCenter = 
 				Game::GetInstance("",0,0).GetState().GetObjectPtr(auxGO);
 	/*
@@ -84,7 +85,33 @@ void Alien::Start() {
 	
 	
 	this->minionArray.push_back(newWeakMinionGO);
+
+	// first minion added ===================================================
 	
+
+	// add second minion ====================================================
+	/*
+	arcOffsetDeg = 90;
+	std::shared_ptr<GameObject> minionGameObject2 =
+		std::make_unique<GameObject>();
+
+	std::unique_ptr<Minion> minionComponent2 = 
+		std::make_unique<Minion>(*minionGameObject2,
+								alienCenter, arcOffsetDeg);
+
+
+	minionGameObject2->AddComponent(std::move(minionComponent2));
+
+	
+	std::weak_ptr<GameObject> newWeakMinionGO2(minionGameObject2);
+
+	Game::GetInstance("",0,0).GetState().objectArray.push_back(
+									std::move(minionGameObject2));
+	
+	
+	this->minionArray.push_back(newWeakMinionGO2);
+	*/
+	// second minion added ====================================================
 
 	this->started = true;
 }

@@ -125,6 +125,11 @@ double Vec2::AngleBetween(const Vec2& other) {
 }
 
 
+Vec2 Vec2::RotateInDegrees(double angle) {
+	double radianAngle = Vec2::ConvertDegreeToRadian(angle);
+
+	return Vec2(this->x, this->y).Rotate(radianAngle);
+}
 
 
 

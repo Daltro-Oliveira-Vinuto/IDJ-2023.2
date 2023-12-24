@@ -1,14 +1,26 @@
 
+#include <time.h>
 
 #include "Minion.h"
 #include "Sprite.h"
+#include "Vec2.h"
 
 Minion::Minion(GameObject& associated,
 			  std::weak_ptr< GameObject> alienCenter,
 			  float arcOffsetDeg = 0): Component(associated), 
 				alienCenter(*(alienCenter.lock().get()) ) {
 
-			
+			srand(time(NULL));
+
+			float minionRandomSize = (rand()%10+1)/10.0 + 0.6;
+
+			if (minionRandomSize >= 1.1) {
+				minionRandomSize = 1.1;
+			}
+
+
+			//std::cout << minionRandomSize << std::endl;
+
 			//std::cout << "&associated inside minion: " << &associated << std::endl;
 			
 			/*
@@ -25,10 +37,23 @@ Minion::Minion(GameObject& associated,
 
 			spriteMinion->SetClip(minionClip);
 
-			Rect rect(this->alienCenter.box.x, this->alienCenter.box.y,
-						spriteMinion->GetWidth(), spriteMinion->GetHeight());
+			float x= 0, y= 0;
+
+			x = this->alienCenter.box.x; y = this->alienCenter.box.y;
+
+			Vec2 vec2Rotated(x,y);
+
+			vec2Rotated = vec2Rotated.RotateInDegrees(arcOffsetDeg);
+
+			x = vec2Rotated.x; y = vec2Rotated.y;
+
+			Rect rect(x, y,
+						spriteMinion->GetWidth()*minionRandomSize
+						, spriteMinion->GetHeight()*minionRandomSize);
 
 			associated.box = rect;
+
+			spriteMinion->SetClipDest(rect);
 
 			associated.AddComponent(std::move(spriteMinion));
 }
