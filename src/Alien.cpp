@@ -46,28 +46,47 @@ Alien::~Alien() {
 
 void Alien::Start() {
 	// add one minion to the alien
+
+	float arcOffsetDeg = 0;
+
+	GameObject* auxGO = &associated;
+
+	//std::cout << "&alienGO in Alien: " << auxGO << std::endl;
+
+	std::weak_ptr<GameObject> alienCenter = 
+				Game::GetInstance("",0,0).GetState().GetObjectPtr(auxGO);
 	/*
-	GameObject* minionGameObjectRawPtr = new GameObject();
-
-	float arcOffSetDeg = 0;
-	std::weak_ptr<GameObject> alienCenter =
-			Game::GetInstance("",0,0).GetState().GetObjectPtr(&associated);
-
-	std::unique_ptr<Minion> newMinion = 
-		std::make_unique<Minion>(*minionGameObjectRawPtr, alienCenter, arcOffSetDeg);
-
-	minionGameObjectRawPtr->AddComponent(std::move(newMinion));
-
-	std::shared_ptr<GameObject> minionGameObject(
-			Game::GetInstance("",0,0).GetState().AddObject(
-				minionGameObjectRawPtr)
-			);
-
-	std::weak_ptr<GameObject> minionGameObjectWeak(minionGameObject);
-
-	this->minionArray.push_back(minionGameObjectWeak);
+	if (!alienCenter.expired()) {
+		std::cout << "raw of weak: " <<
+			 ((alienCenter.lock()).get()) << std::endl;
+	}
 	*/
+	
+	std::shared_ptr<GameObject> minionGameObject =
+		std::make_unique<GameObject>();
 
+	std::unique_ptr<Minion> minionComponent = 
+		std::make_unique<Minion>(*minionGameObject,
+								alienCenter, arcOffsetDeg);
+
+
+	minionGameObject->AddComponent(std::move(minionComponent));
+
+	//std::cout << "minionGameObject.get(): " << minionGameObject.get() << std::endl;
+	
+	std::weak_ptr<GameObject> newWeakMinionGO(minionGameObject);
+	//std::weak_ptr<GameObject> newWeakMinionGO =
+	//	(Game::GetInstance("",0,0).GetState()).AddObject(minionGameObject.get());
+	
+	
+	Game::GetInstance("",0,0).GetState().objectArray.emplace_back(
+									std::move(minionGameObject));
+	
+	
+	this->minionArray.push_back(newWeakMinionGO);
+	
+
+	this->started = true;
 }
 
 void Alien::Update(float dt) {

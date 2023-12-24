@@ -6,8 +6,15 @@
 Minion::Minion(GameObject& associated,
 			  std::weak_ptr< GameObject> alienCenter,
 			  float arcOffsetDeg = 0): Component(associated), 
-				alienCenter(*((alienCenter.lock()).get())) {
+				alienCenter(*(alienCenter.lock().get()) ) {
+
 			
+			//std::cout << "&associated inside minion: " << &associated << std::endl;
+			
+			/*
+			std::cout << " &alienCenter in minion: " <<
+					&(this->alienCenter) << std::endl;
+			*/
 			this->arc = arcOffsetDeg;
 
 			std::unique_ptr<Sprite> spriteMinion =
@@ -28,6 +35,10 @@ Minion::Minion(GameObject& associated,
 
 void Minion::Update(float dt) {
 
+	associated.box.x = alienCenter.box.x - alienCenter.box.w/2.0;
+	associated.box.y = alienCenter.box.y - alienCenter.box.h/2.0;
+
+	associated.angleDeg+= 20*dt;
 }
 
 void Minion::Render() {

@@ -49,17 +49,19 @@ GameObject::~GameObject() {
 
 void GameObject::Start() {
 	//printf("Game object started!\n");
-	std::vector< std::unique_ptr<Component> >::iterator it;
-	for(it = this->components.begin(); it!= this->components.end(); it++) {
-		(*it)->Start();
+	std::vector< std::unique_ptr<Component> >::iterator it = 
+													components.begin();
+	for(unsigned i = 0; i < this->components.size(); i++) {
+		(*(it + i))->Start();
 	}
 	this->started = true;
 }
 
 void GameObject::Update(float dt) {
-	std::vector< std::unique_ptr<Component> >::iterator it;
-	for(it = this->components.begin(); it!= this->components.end(); it++) {
-		(*it)->Update(dt);
+	std::vector< std::unique_ptr<Component> >::iterator it =
+													 components.begin();
+	for(unsigned i = 0; i < this->components.size(); i++) {
+		(*(it + i))->Update(dt);
 	}
 }
 
@@ -69,9 +71,10 @@ void GameObject::Render() {
 		(*it)->Render();
 	}
 	*/
-	std::vector< std::unique_ptr<Component> >::iterator it;
-	for(it = this->components.begin(); it!= this->components.end(); it++) {
-		(*it)->Render();
+	std::vector< std::unique_ptr<Component> >::iterator it = 
+														components.begin();
+	for(unsigned i = 0; i < this->components.size(); i++) {
+		(*(it + i))->Render();
 	}
 }
 
@@ -85,9 +88,6 @@ void GameObject::RequestDelete() {
 
 void GameObject::AddComponent(std::unique_ptr<Component> component) {
 
-	if (!(component->started)) {
-		component->Start();
-	}
 	components.emplace_back(std::move(component));
 
 }

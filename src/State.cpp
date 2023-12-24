@@ -29,10 +29,12 @@ void State::Start() {
 
 	this->LoadAssets();
 
-	std::vector< std::shared_ptr<GameObject>>::iterator it;
+	std::vector< std::shared_ptr<GameObject>>::iterator it =
+												this->objectArray.begin();
 
-	for(it = this->objectArray.begin(); it != this->objectArray.end(); it++) {
-		(*it)->Start();
+	for(unsigned i = 0; i < this->objectArray.size(); i++) {
+		(*(it+i))->Start();
+		
 	}
 
 	this->started = true;
@@ -41,14 +43,14 @@ void State::Start() {
 
 std::weak_ptr<GameObject> State::AddObject(GameObject* newObject) {
 	
+	std::cout << "newObject: "<< newObject << std::endl;
+
 	std::shared_ptr<GameObject> newObjectShared(newObject);
+	
+	std::cout << "newObjectShared.get(): " << newObjectShared.get() << std::endl;
 	
 	this->objectArray.emplace_back(std::move(newObjectShared) );
 
-	if (this->started && newObjectShared != nullptr ) {
-		newObjectShared->Start();
-	}
-	
 	std::weak_ptr<GameObject> newObjectWeak =  newObjectShared;
 
 	return newObjectWeak;
@@ -61,14 +63,14 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* desiredObject) {
 
 	std::vector< std::shared_ptr<GameObject> >::iterator it;
 
-	for(it = this->objectArray.begin(); it != this->objectArray.end(); it++) {
+	for(it = this->objectArray.begin(); it != this->objectArray.end(); ++it) {
 		GameObject* someObject = (*it).get();
-
+		//std::cout << "someObject: " << someObject << ",  desiredObject: " << desiredObject << std::endl;
 		if (someObject == desiredObject) {
+			//std::cout << "found address: " << someObject << std::endl;
 			std::weak_ptr<GameObject> desiredWeakObjectFound( (*it) );
 			
 			return desiredWeakObjectFound;
-			break;
 		}
 	}
 
@@ -79,21 +81,37 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* desiredObject) {
 void State::LoadAssets() {
 		
 	std::unique_ptr<GameObject> newGameObject(new GameObject());
+
 	std::unique_ptr<Sprite> newSprite(new Sprite(*newGameObject, "assets/img/ocean.jpg") );
+	
 	Rect clip(0, 0, newSprite->GetWidth(), newSprite->GetHeight());
+
 	newSprite->SetClip(clip);
+
 	newGameObject->box = clip;
+
 	newGameObject->AddComponent(std::move(newSprite));
-	std::unique_ptr<CameraFollower> cameraFollower = std::make_unique<CameraFollower>(*newGameObject);
+
+	std::unique_ptr<CameraFollower> cameraFollower = 
+		std::make_unique<CameraFollower>(*newGameObject);
+
 	newGameObject->AddComponent(std::move(cameraFollower));
 
 	objectArray.emplace_back(std::move(newGameObject));
 
 
-	std::unique_ptr<GameObject> gameObjectWithTileMap = std::make_unique<GameObject>();
+
+	std::unique_ptr<GameObject> gameObjectWithTileMap =
+		 std::make_unique<GameObject>();
+
 	TileSet* tileSet = new TileSet(64,64,"assets/img/tileset.png");
-	std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(*gameObjectWithTileMap,"assets/map/tileMap.txt", tileSet);
-	gameObjectWithTileMap->box = Rect(0,0,tileSet->GetTileWidth(), tileSet->GetTileHeight());
+
+	std::unique_ptr<TileMap> tileMap = 
+		std::make_unique<TileMap>(*gameObjectWithTileMap,"assets/map/tileMap.txt", tileSet);
+	
+	gameObjectWithTileMap->box = 
+		Rect(0,0,tileSet->GetTileWidth(), tileSet->GetTileHeight());
+
 	gameObjectWithTileMap->AddComponent(std::move(tileMap));
 
 	objectArray.emplace_back(std::move( gameObjectWithTileMap) );
@@ -101,14 +119,25 @@ void State::LoadAssets() {
 
 	std::shared_ptr<GameObject> alienGameObject = 
 										std::make_shared<GameObject>();
-	int numberOfMinions = 2;
+
+	//std::cout << "&alienGO in state: " << alienGameObject.get() << std::endl;
+
+	int numberOfMinions = 4;
 	std::unique_ptr<Alien> alienComponent =
-					 std::make_unique<Alien>(*alienGameObject,numberOfMinions);
+			std::make_unique<Alien>(*alienGameObject,numberOfMinions);
+
 	alienGameObject->AddComponent(std::move(alienComponent));
 
 	objectArray.emplace_back(std::move(alienGameObject));
 
 	time_passed = 0;
+
+	/*
+	for(auto it = objectArray.begin(); it!= objectArray.end(); it++) {
+		 std::cout << "(*it).get(): " << (*it).get() << std::endl;
+
+	}
+	*/
 }
 
 
@@ -158,9 +187,12 @@ void State::Update(float dt) {
 		}
 		*/
 
-		for(auto it = objectArray.begin(); it != objectArray.end(); ++it) {
-			(*it)->Update(dt);
-		}
+	std::vector< std::shared_ptr<GameObject>>::iterator it =
+												this->objectArray.begin();
+	for(unsigned i = 0; i < this->objectArray.size(); i++) {
+		(*(it+i))->Update(dt);
+		
+	}
 
 		for(unsigned i = 0; i < objectArray.size(); i++) {
 			if ((objectArray[i])->IsDead()) {
@@ -191,8 +223,11 @@ void State::Render() {
 	//bg.SetClip(0, 0, bg.GetWidth(), bg.GetHeight());
 	//bg.Render( 0, 0);
 
-	for(auto it = objectArray.begin(); it != objectArray.end(); ++it) {
-		(*it)->Render();
+	std::vector< std::shared_ptr<GameObject>>::iterator it =
+												this->objectArray.begin();
+	for(unsigned i = 0; i < this->objectArray.size(); i++) {
+		(*(it+i))->Render();
+		
 	}
 
 }

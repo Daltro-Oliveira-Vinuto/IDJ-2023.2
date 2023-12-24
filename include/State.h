@@ -42,12 +42,16 @@ public:
 	//void Input();
 	//void AddObject(int, int);
 
+	// SHOULD BE PRIVATE!!!!!!!!!!!!
+	std::vector< std::shared_ptr<GameObject> > objectArray;
+
+
 private:
 	Music music;
 	bool quitRequested;	
 
 	//std::vector< std::unique_ptr<GameObject> >  objectArray;
-	std::vector< std::shared_ptr<GameObject> > objectArray;
+	//std::vector< std::shared_ptr<GameObject> > objectArray;
 
 	std::vector< std::unique_ptr<Component> > soundsArray;
 
