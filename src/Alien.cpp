@@ -34,7 +34,7 @@ Alien::Alien(GameObject& associated, int nMinions): Component(associated) {
 
 	associated.AddComponent(std::move(spriteOfAlien));
 
-	this->speed = Vec2(100,100);
+	this->speed = Vec2(200,200);
 	this->hp = 100;
 	this->minionArray = {};
 
@@ -90,7 +90,7 @@ void Alien::Start() {
 }
 
 void Alien::Update(float dt) {
-	associated.angleDeg+= 20*dt;
+	//associated.angleDeg+= 20*dt;
 
 	ActionType typeOfAction;
 
@@ -121,25 +121,44 @@ void Alien::Update(float dt) {
 		if (action.type == ActionType::SHOOT) {
 			this->taskQueue.pop();
 		} else if (action.type == ActionType::MOVE) {
-			Vec2 spaceVariation = this->speed*dt;
-			float minimumDelta = 5.0;
+			bool reachedDestination = false;
 
-			float distance = associated.box.GetCenter().DistanceTo(action.pos); 
-			if (distance > minimumDelta) { 
-				if(associated.box.GetCenter().x < action.pos.x) { 
-					associated.box.x+=spaceVariation.x; }
-				else if (associated.box.GetCenter().x > action.pos.x){
-					 associated.box.x-= spaceVariation.x;
+			Vec2 vec2Difference = action.pos - associated.box.GetCenter();
 
-				} if(associated.box.GetCenter().y <	action.pos.y) { 
-					associated.box.y+= spaceVariation.y;
-				}else if (associated.box.GetCenter().y > action.pos.y) { 
-					associated.box.y-=spaceVariation.y;
-				} 
-			} else 	{ 
-				this->taskQueue.pop(); 
+
+			Vec2 vec2DiffNormalized = vec2Difference.GetNormalized();
+
+			Vec2 vec2Speed = vec2DiffNormalized*dt;
+
+			vec2Speed =
+				 Vec2(
+				 	vec2Speed.x*(this->speed.x), 
+				 	vec2Speed.y*(this->speed.y));
+						 
+			float distance = 
+				action.pos.DistanceTo(
+								associated.box.GetCenter());
+
+			if (distance > 0.0) { 
+
+				if (distance > vec2Speed.x && distance > vec2Speed.y) {
+					associated.box = associated.box.AddVec2(vec2Speed);
+					
+
+				} else {
+					associated.box.x = action.pos.x - associated.box.w/2.0;
+					associated.box.y = action.pos.y - associated.box.h/2.0;
+				}
+				
+
+			} else { 
+				
+				reachedDestination = true;
 			}
 
+			if (reachedDestination) {
+				this->taskQueue.pop();
+			}
 		}
 	}
 

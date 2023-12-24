@@ -1,5 +1,6 @@
 
 #include "Vec2.h"
+#include "Rect.h"
 #include <math.h>
 
 
@@ -15,7 +16,8 @@ Vec2::Vec2(int x, int y) {
 }
 
 Vec2::Vec2(double x, double y) {
-	this-> x = x; this->y = y;
+	this->x = x; 
+	this->y = y;
 	this->mod = this->GetMagnitude(x, y);
 	this->angle = this->GetAngle(this->x, this->y);
 
@@ -26,7 +28,9 @@ Vec2::~Vec2() {
 }
 
 double Vec2::GetMagnitude(double x, double y) {
-	return sqrt(x*x + y*y);
+	double magnitude = sqrt(x*x + y*y);
+	//std::cout << "magnitude is: " << magnitude << std::endl;
+	return magnitude;
 }
 
 double Vec2::GetAngle(double x, double y) {
@@ -39,18 +43,23 @@ double Vec2::GetAngle(double x, double y) {
 
 
 Vec2 Vec2::operator + (const Vec2& other) {
-	Vec2 v_result;
+	float x, y;
 
-	v_result.x = x + other.x;
-	v_result.y = y + other.y;
+	x = this->x + other.x;
+	y = this->y + other.y;
 
+	Vec2 v_result(x,y);
+	
 	return v_result;
 }
 
 Vec2 Vec2::operator - (const Vec2& other) {
-	Vec2 v_result;
+	float x, y;
+	
+	x = this->x - other.x;
+	y = this->y - other.y;
 
-	v_result = *this + Vec2(-other.x, -other.y);
+	Vec2 v_result(x, y);
 
 	return v_result;
 }
@@ -62,16 +71,19 @@ Vec2 Vec2::operator * (const double& value) {
 }
 
 
-
 std::ostream& operator << (std::ostream& output, const Vec2& vec2) {
-	output << "(x, y) = (" << vec2.x << " , " << vec2.y << ")" << std::endl;
+	output << "(x, y, mod, angle) = ( " << vec2.x << " , " 
+									   << vec2.y << " , " 
+									   << vec2.mod << " , "
+									   << vec2.angle << " )"
+									   << std::endl;
 	return output;
 }
 
-
 Vec2 Vec2::GetNormalized() {
-	Vec2 v_normalized(x/this->mod, y/this->mod);
+	Vec2 v_normalized(this->x/this->mod, this->y/this->mod);
 
+	//std::cout << "v_normalized: " << v_normalized << std::endl;
 	return v_normalized;
 }
 
@@ -84,11 +96,11 @@ double Vec2::DistanceTo(const Vec2& other) {
 }
 
 Vec2 Vec2::Rotate(double angle) {
-	Vec2 v_result;
-	v_result.x = x*cos(angle) - y*sin(angle);
-	v_result.y = y*cos(angle) + x*sin(angle);
+	float newX, newY;
+	newX = this->x*cos(angle) - this->y*sin(angle);
+	newY = this->y*cos(angle) + this->x*sin(angle);
 
-	return v_result;
+	return Vec2(newX, newY);
 }
 
 double Vec2::DotProduct(const Vec2& other) {
@@ -111,3 +123,20 @@ double Vec2::AngleBetween(const Vec2& other) {
 
 	return angle;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

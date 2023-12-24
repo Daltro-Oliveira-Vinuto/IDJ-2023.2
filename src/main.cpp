@@ -17,24 +17,36 @@ int main(int argc, char **argv) {
     //const int SCREEN_WIDTH = 1920, SCREEN_HEIGHT = 1080;
 
     #ifdef DEBUG_MODE // ----------------------------------------------------------------
-	Vec2 v1(3, -2), v2(1, 7	);
+	Vec2 v1(15, 10), v2(7,1	), v3;
 
 	std::cout << "v1: " << v1 << std::endl;
 
 	std::cout << "v2: " << v2 << std::endl;
 
 	std::cout << "v1+v2: " << v1 + v2 << std::endl;
+
 	std::cout << "v1-v2: " << v1 - v2 << std::endl;
+
+	v3 = v1-v2;
+
+	std::cout << "v3: "<< v3 << std::endl;
+
 	std::cout << "v1*5: " << v1*5 << std::endl;
+
 	std::cout << "|v1|: " << v1.mod << std::endl;
+
 	std::cout << "v1 normalized: " << v1.GetNormalized() << std::endl;
-	std::cout << "distance between v1 and v2: " << v1.DistanceTo(v2) << std::endl;
+
+	std::cout << "distance between v1 and v2: " << 
+			v1.DistanceTo(v2) << std::endl;
+
 	std::cout << "angle from ox of v1: " << v1.angle << std::endl;
 
 	std::cout << "angle from ox of v1(in degrees): " << 
-	Vec2::ConvertRadianToDegree( v1.angle ) << std::endl;
+		Vec2::ConvertRadianToDegree( v1.angle ) << std::endl;
+
 	std::cout << "v1 rotated in -90 degrees: " << 
-	v1.Rotate(Vec2::ConvertDegreeToRadian(-90)) << std::endl;
+		v1.Rotate(Vec2::ConvertDegreeToRadian(-90)) << std::endl;
 
 	Rect r1(0,0,10,10), r2;
 	r2 = r1;
@@ -43,8 +55,8 @@ int main(int argc, char **argv) {
 	std::cout << "contains : " << r1.ContainVec2(v1) << std::endl;
 	std::cout << "angle between v1 and v2: " << Vec2::ConvertRadianToDegree(v1.AngleBetween(v2)) 
 	<< std::endl;
-	std::cout << "v1 * v2 : " << v1.DotProduct(v2) << std::endl; 
-
+	std::cout << "dotproduct(v1,v2): v1 * v2 : " << v1.DotProduct(v2) << std::endl; 
+	std::cout << "r1 + v1: " << r1.AddVec2(v1) << std::endl;
 
 	#endif // -------------------------------------------------------------------------------
 	
