@@ -8,8 +8,6 @@
 #include "Component.h"
 #include "Minion.h"
 
-
-
 #ifndef ALIEN_H
 #define ALIEN_H
 

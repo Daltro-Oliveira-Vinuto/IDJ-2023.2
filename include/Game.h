@@ -28,6 +28,7 @@ public:
 	float GetDeltaTime();
 
 	static int FPS;
+	static int delay;
 
 	int GetWidth();
 	int GetHeight();

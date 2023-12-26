@@ -17,9 +17,15 @@ int main(int argc, char **argv) {
     //const int SCREEN_WIDTH = 1920, SCREEN_HEIGHT = 1080;
 
     #ifdef DEBUG_MODE // ----------------------------------------------------------------
-	Vec2 v1(15, 10), v2(7,1	), v3;
+	Vec2 v1(1,0), v2(7,1	), v3;
 
 	std::cout << "v1: " << v1 << std::endl;
+
+	std::cout << "v1 rotated in 0 deg: " << v1.RotateInDegrees(0) << std::endl;
+	std::cout << "v1 rotated in 90 deg: " << v1.RotateInDegrees(90) << std::endl;
+	std::cout << "v1 rotated in 180 deg: " << v1.RotateInDegrees(180) << std::endl;
+	std::cout << "v1 rotated in -90 deg: " << v1.RotateInDegrees(-90) << std::endl;
+	std::cout << "v1 rotated in -180 deg: " << v1.RotateInDegrees(-180) << std::endl;
 
 	std::cout << "v2: " << v2 << std::endl;
 

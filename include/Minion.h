@@ -20,7 +20,9 @@ public:
 	void Shoot(Vec2 target);
 
 private:
-	GameObject& alienCenter;
+	//GameObject& alienCenter;
+	std::weak_ptr< GameObject> alienCenter;
+	
 	float arc;
 
 };

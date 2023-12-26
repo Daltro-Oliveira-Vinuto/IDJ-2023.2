@@ -6,6 +6,8 @@
 
 Sprite::Sprite(GameObject& associated): Component(associated) {
 	texture = NULL;
+	this->clipSource = {0,0,0,0};
+	this->clipDestine = {0,0,0,0};
 }
 
 Sprite::Sprite(GameObject& associated, std::string file): Component(associated) {
@@ -19,15 +21,6 @@ Sprite::~Sprite() {
 
 void Sprite::Open(std::string file) {
 
-	/*
-	if (texture != NULL) {
-		SDL_DestroyTexture(texture);
-	} else {
-		texture = NULL;
-	}
-	*/
-
-
 	this->texture = Game::GetInstance("",0,0).GetResources().GetImage(file.c_str());
 	//texture = IMG_LoadTexture(Game::GetInstance("",0,0).GetRenderer(), file.c_str());
 
@@ -36,6 +29,7 @@ void Sprite::Open(std::string file) {
 	} else {
 		SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 		this->clipSource = {0,0, width, height};
+		this->clipDestine = this->clipSource;
 	}
 }
 
@@ -45,7 +39,6 @@ void Sprite::SetClip(const Rect& clip) {
 }
 
 void Sprite::Update(float dt) {
-
 }
 
 void Sprite::Render() {
@@ -54,8 +47,7 @@ void Sprite::Render() {
 	x = associated.box.x + Camera::pos.x;
 	y = associated.box.y + Camera::pos.y;
 
-	Render(x, y);
-	
+	Render(x, y);	
 }
 
 void Sprite::Render(int x, int y) {
@@ -71,9 +63,9 @@ void Sprite::Render(int x, int y) {
 
 	if (SDL_RenderCopyEx(Game::GetInstance("",0,0).GetRenderer(), 
 				this->texture, 
-				&clipSource, 
+				&(this->clipSource), 
 				&rect_destine,
-				associated.angleDeg,
+				this->associated.angleDeg,
 				center,
 				flip) != 0) {
 		printf("Error to render, %s\n", SDL_GetError());

@@ -7,6 +7,7 @@
 
 Game* Game::instance = NULL;
 int Game::FPS = 30;
+int Game::delay = 1000.0/Game::FPS;
 
 void Game::Update(float dt) {
 	//input.Update();
@@ -16,70 +17,29 @@ void Game::Update(float dt) {
 
 void Game::Render() {
 	state->Render();
+
+	SDL_RenderPresent(renderer);
+	SDL_Delay(Game::delay);
 }
 
 void Game::Run() {
 	//printf("Game loop is started(rate ~ frame/iteration)!---------------> \n");
-
-	int delay = 1000.0/FPS;
-
-	//InputManager::GetInstance().Update();
-	//this->CalculaDeltaTime();
-	//state->Update(this->dt);
 	
 	if (state == NULL) {
-		printf("State not started!\n");
+		printf("State not created!\n");
 		exit(0);
 	}
 	
 	state->Start();
 	
 	while(state->QuitRequested()==false) {
-		/*
-		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff,0xff);
-		SDL_RenderClear(renderer);
-		SDL_Rect rect = {50,50, 200, 200};
-		SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0xff);
-		SDL_RenderDrawRect(renderer, &rect);
-		*/
-
-		// step 1: Verify, control and load the game's screens;
-
-		// step 2: Input date readed and processed
-
-		// UNFINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// step 3: State of the objects are updated
 
 		this->CalculaDeltaTime();
 
 		this->Update(this->dt);
 
-		// step 4: The objects are drawn in the screen
 		this->Render();
 
-
-		SDL_RenderPresent(renderer);
-		SDL_Delay(delay);
-
-
-		/*
-		SDL_Event event;
-
-		while(SDL_PollEvent(&event)!=0) {
-			switch(event.type) {
-				case (SDL_QUIT):
-					state->RequestToQuit();
-					break;
-				
-				case (SDL_KEYDOWN):
-					if (event.key.keysym.sym == SDLK_ESCAPE){
-						state->RequestToQuit();
-					}
-
-					break;
-				}
-		}
-		*/
 	}
 }
 
@@ -93,7 +53,6 @@ Game::Game(std::string title, int width, int height) {
 	//printf("address of resources allocated: %p\n", resources);
 
 	//printf("Object Game started!\n");
-	FPS = 30;
 	if (instance != NULL) {
 		printf("Error! Game constructor should be called only once!\n");
 	} else {

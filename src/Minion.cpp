@@ -1,16 +1,18 @@
 
 #include <time.h>
+#include <stdlib.h>
 
 #include "Minion.h"
 #include "Sprite.h"
 #include "Vec2.h"
+#include "Game.h"
 
 Minion::Minion(GameObject& associated,
 			  std::weak_ptr< GameObject> alienCenter,
 			  float arcOffsetDeg = 0): Component(associated), 
-				alienCenter(*(alienCenter.lock().get()) ) {
+				alienCenter(alienCenter) {
 
-			srand(time(NULL));
+			srand(time(0));
 
 			float minionRandomSize = (rand()%10+1)/10.0 + 0.6;
 
@@ -18,15 +20,6 @@ Minion::Minion(GameObject& associated,
 				minionRandomSize = 1.1;
 			}
 
-
-			//std::cout << minionRandomSize << std::endl;
-
-			//std::cout << "&associated inside minion: " << &associated << std::endl;
-			
-			/*
-			std::cout << " &alienCenter in minion: " <<
-					&(this->alienCenter) << std::endl;
-			*/
 			this->arc = arcOffsetDeg;
 
 			std::unique_ptr<Sprite> spriteMinion =
@@ -37,23 +30,45 @@ Minion::Minion(GameObject& associated,
 
 			spriteMinion->SetClip(minionClip);
 
-			float x= 0, y= 0;
+			float rectX = 0, rectY = 0;
 
-			x = this->alienCenter.box.x; y = this->alienCenter.box.y;
+			if ( ! alienCenter.expired() ) {
+				float radius;
 
-			Vec2 vec2Rotated(x,y);
+				if (alienCenter.lock()->box.w >=
+					alienCenter.lock()->box.h) {
+					radius = alienCenter.lock()->box.w/2.0;
+				} else {
+					radius = alienCenter.lock()->box.h/2.0;
+				}
 
-			//std::cout << "before rotation: "<<
-			//		vec2Rotated << std::endl;
+				Vec2 baseVec2(
+					radius+spriteMinion->GetWidth()*minionRandomSize/2.0,
+					radius+spriteMinion->GetHeight()*minionRandomSize/2.0);
 
-			vec2Rotated = vec2Rotated.RotateInDegrees(arcOffsetDeg);
+				Vec2 centerVec2 = alienCenter.lock()->box.GetCenter();
 
-			//std::cout << "after rotated: " << vec2Rotated <<
-			//	std::endl;
+				baseVec2 = baseVec2.RotateInDegrees(arcOffsetDeg);
 
-			x = vec2Rotated.x; y = vec2Rotated.y;
+				Vec2 finalPosVec2 = centerVec2 + baseVec2;
 
-			Rect rect(x, y,
+		
+				finalPosVec2 = 
+					finalPosVec2 - 
+						Vec2(
+							spriteMinion->GetWidth()*minionRandomSize/2.0
+							,spriteMinion->GetHeight()*minionRandomSize/2.0
+												);
+												 
+				rectX = finalPosVec2.x;
+				rectY = finalPosVec2.y;
+
+
+			} else {
+				associated.RequestDelete();
+			}
+
+			Rect rect(rectX, rectY,
 						spriteMinion->GetWidth()*minionRandomSize
 						, spriteMinion->GetHeight()*minionRandomSize);
 
@@ -61,15 +76,53 @@ Minion::Minion(GameObject& associated,
 
 			spriteMinion->SetClipDest(rect);
 
+			//std::cout << associated.box << std::endl;
+
 			associated.AddComponent(std::move(spriteMinion));
 }
 
 void Minion::Update(float dt) {
+	associated.angleDeg += -(10*dt);
 
-	associated.box.x = alienCenter.box.x - alienCenter.box.w/2.0;
-	associated.box.y = alienCenter.box.y - alienCenter.box.h/2.0;
+	if ( alienCenter.expired() ) {
+		associated.RequestDelete();
+	} else {
+		
+		float radius, rectX, rectY;
 
-	associated.angleDeg+= 20*dt;
+		if (alienCenter.lock()->box.w >=
+			alienCenter.lock()->box.h) {
+			radius = alienCenter.lock()->box.w/2.0;
+		} else {
+			radius = alienCenter.lock()->box.h/2.0;
+		}
+
+		Vec2 baseVec2(
+			radius+associated.box.w/2.0,
+			radius+associated.box.h/2.0);
+
+		Vec2 centerVec2 = alienCenter.lock()->box.GetCenter();
+
+		baseVec2 = baseVec2.RotateInDegrees(associated.angleDeg);
+		baseVec2 = baseVec2.RotateInDegrees(this->arc);
+
+		Vec2 finalPosVec2 = centerVec2 + baseVec2;
+
+
+		finalPosVec2 = 
+			finalPosVec2 - 
+				Vec2(
+					associated.box.w/2.0
+					,associated.box.h/2.0
+										);
+										 
+		rectX = finalPosVec2.x;
+		rectY = finalPosVec2.y;
+
+		associated.box.x = rectX;
+		associated.box.y = rectY;
+	}
+
 }
 
 void Minion::Start() {
@@ -77,7 +130,7 @@ void Minion::Start() {
 }
 
 void Minion::Render() {
-
+	
 }
 
 bool Minion::Is(std::string type) {

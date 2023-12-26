@@ -1,4 +1,6 @@
 #include <memory>
+#include <time.h>
+#include <stdlib.h>
 
 #include "Alien.h"
 #include "Sprite.h"
@@ -46,87 +48,38 @@ Alien::~Alien() {
 }
 
 void Alien::Start() {
-	// add one minion to the alien
-
-	float arcOffsetDeg = 0;
-
+	
 	GameObject* auxGO = &associated;
 
-	// add first minion =================================================
 	std::weak_ptr<GameObject> alienCenter = 
 				Game::GetInstance("",0,0).GetState().GetObjectPtr(auxGO);
-	/*
-	if (!alienCenter.expired()) {
-		std::cout << "raw of weak: " <<
-			 ((alienCenter.lock()).get()) << std::endl;
-	}
-	*/
+
 	
-	GameObject* minionGameObject = new GameObject();
+	float arcOffsetDeg = 0;
+	int incrementOfArc = (360.0/this->numberOfMinions);
+	for(int i = 0; i < this->numberOfMinions; i++) {
+
+		arcOffsetDeg = -incrementOfArc*i;
+
+		GameObject* minionGameObject = new GameObject();
+			
+		std::unique_ptr<Minion> minionComponent = 
+			std::make_unique<Minion>(*minionGameObject,
+									alienCenter, arcOffsetDeg);
+
+		minionGameObject->AddComponent(std::move(minionComponent));
 		
-	std::unique_ptr<Minion> minionComponent = 
-		std::make_unique<Minion>(*minionGameObject,
-								alienCenter, arcOffsetDeg);
-
-	minionGameObject->AddComponent(std::move(minionComponent));
-
-	//std::cout << "minionGameObject.get(): " << minionGameObject.get() << std::endl;
-	
-	std::weak_ptr<GameObject> newWeakMinionGO =
-		(Game::GetInstance("",0,0).GetState()).AddObject(minionGameObject);
-	
-	
-	this->minionArray.push_back(newWeakMinionGO);
-
-	// first minion added ===================================================
-	
-
-	// add second minion ====================================================
-	
-	arcOffsetDeg = 10;
-	GameObject* minionGameObjectTwo = new GameObject();
-
-	std::unique_ptr<Minion> minionComponentTwo = 
-		std::make_unique<Minion>(*minionGameObjectTwo,
-								alienCenter, arcOffsetDeg);
-
-
-	minionGameObjectTwo->AddComponent(std::move(minionComponentTwo));
-
-	
-	std::weak_ptr<GameObject> newWeakMinionGOTwo =
-		(Game::GetInstance("",0,0).GetState()).AddObject(minionGameObjectTwo);
-	
-	
-	this->minionArray.push_back(newWeakMinionGOTwo);
-	
-	// second minion added ====================================================
-
-	// add third minion ====================================================
-	
-	arcOffsetDeg = 20;
-	GameObject* minionGameObjectThree = new GameObject();
-
-	std::unique_ptr<Minion> minionComponentThree = 
-		std::make_unique<Minion>(*minionGameObjectThree,
-								alienCenter, arcOffsetDeg);
-
-
-	minionGameObjectThree->AddComponent(std::move(minionComponentThree));
-
-	
-	std::weak_ptr<GameObject> newWeakMinionGOThree =
-		(Game::GetInstance("",0,0).GetState()).AddObject(minionGameObjectThree);
-	
-	this->minionArray.push_back(newWeakMinionGOThree);
-	
-	// second minion added ====================================================
+		std::weak_ptr<GameObject> newWeakMinionGO =
+			Game::GetInstance("",0,0).GetState().AddObject(minionGameObject);
+		
+		this->minionArray.push_back(newWeakMinionGO);
+	}
 
 	this->started = true;
 }
 
 void Alien::Update(float dt) {
-	//associated.angleDeg+= 20*dt;
+	associated.angleDeg+= 20*dt;
 
 	ActionType typeOfAction;
 
@@ -175,18 +128,26 @@ void Alien::Update(float dt) {
 				action.pos.DistanceTo(
 								associated.box.GetCenter());
 
-			if (distance > 0.0) { 
+			if (distance > 1.0) { 
 
 				if (distance > vec2Speed.x && distance > vec2Speed.y) {
 					associated.box = associated.box.AddVec2(vec2Speed);
 					
-
 				} else {
 					associated.box.x = action.pos.x - associated.box.w/2.0;
 					associated.box.y = action.pos.y - associated.box.h/2.0;
+
+				}
+
+				// update the position of the minions
+				for(unsigned i = 0; i < this->minionArray.size(); i++) {
+					if ( ! (*(this->minionArray.begin()+i)).expired() ) {
+						(*(this->minionArray.begin()+i)).lock()->box =
+							(*(this->minionArray.begin()+i)).lock()->box.
+							AddVec2(vec2Speed);
+					}
 				}
 				
-
 			} else { 
 				
 				reachedDestination = true;

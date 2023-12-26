@@ -17,7 +17,7 @@ Rect::~Rect() {
 }
 
 std::ostream& operator << (std::ostream& output, const Rect& rect) {
-	output << "(x, y, h, w) = (" << rect.x << " , " << rect.y << " , "
+	output << "(x, y, w, h) = (" << rect.x << " , " << rect.y << " , "
 	 << rect.w << " , " << rect.h << ")" << std::endl;
 	return output;
 
