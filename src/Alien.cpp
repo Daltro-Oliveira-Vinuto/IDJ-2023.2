@@ -1,6 +1,7 @@
 #include <memory>
 #include <time.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "Alien.h"
 #include "Sprite.h"
@@ -57,6 +58,8 @@ void Alien::Start() {
 	
 	float arcOffsetDeg = 0;
 	int incrementOfArc = (360.0/this->numberOfMinions);
+
+	srand(time(NULL));
 	for(int i = 0; i < this->numberOfMinions; i++) {
 
 		arcOffsetDeg = -incrementOfArc*i;
@@ -108,6 +111,29 @@ void Alien::Update(float dt) {
 		Action action = this->taskQueue.front();
 
 		if (action.type == ActionType::SHOOT) {
+			
+			float minDistance = INT_MAX;
+			unsigned closestMinion = 0;
+			unsigned i;
+			for(i= 0; i < this->minionArray.size(); i++) {
+				float distance; 
+				distance = action.pos.DistanceTo(
+						(*(minionArray.begin()+i)).lock()->box.GetCenter()
+						);
+
+				if (distance < minDistance) {
+					minDistance = distance;
+					closestMinion = i;
+				}
+			}
+			
+			Minion* minionChoosedPtr =
+				 (Minion*)
+				 		(*(minionArray.begin()+closestMinion)).lock()->
+							GetComponent("Minion");
+
+			minionChoosedPtr->Shoot(action.pos);
+
 			this->taskQueue.pop();
 		} else if (action.type == ActionType::MOVE) {
 			bool reachedDestination = false;

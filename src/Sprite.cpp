@@ -1,16 +1,26 @@
+#include <stdlib.h>
+#include <iostream>
+
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Rect.h"
+#include "Vec2.h"
+
 
 Sprite::Sprite(GameObject& associated): Component(associated) {
-	texture = NULL;
+	this->texture = NULL;
 	this->clipSource = {0,0,0,0};
 	this->clipDestine = {0,0,0,0};
+	this->scale = Vec2(1,1);
 }
 
 Sprite::Sprite(GameObject& associated, std::string file): Component(associated) {
+	this->texture = NULL;
+	this->clipSource = {0,0,0,0};
+	this->clipDestine = {0,0,0,0};
+	this->scale = Vec2(1,1);
 	Open(file);
 }
 
@@ -51,7 +61,19 @@ void Sprite::Render() {
 }
 
 void Sprite::Render(int x, int y) {
-	SDL_Rect rect_destine = {x, y, clipDestine.w, clipDestine.h};
+	SDL_Rect rect_destine = {
+		x, 
+		y,
+		clipDestine.w*int(this->scale.x),
+		clipDestine.h*int(this->scale.y)
+			};
+
+	/*
+	std::cout << "scale: " << this->scale.x << " , " << this->scale.y <<
+				std::endl;
+	std::cout << rect_destine.w << " , "<< 
+				rect_destine.h << std::endl;
+	*/
 	/*
 	if (SDL_RenderCopy(Game::GetInstance("",0,0).GetRenderer(), texture, &clipRect, &destine_rect) != 0) {
 		printf("Error to render, %s\n", SDL_GetError());
@@ -83,11 +105,13 @@ bool Sprite::Is(std::string type) {
 }
 
 int Sprite::GetWidth() {
-	return width;
+	int spriteWidth = this->width;
+	return spriteWidth;
 }
 
 int Sprite::GetHeight() {
-	return height;
+	int spriteHeight = this->height;
+	return spriteHeight;
 }
 
 bool Sprite::IsOpen() {
@@ -103,7 +127,18 @@ bool Sprite::IsOpen() {
 }
 
 void Sprite::SetScale(float scaleX, float scaleY) {
-	this->scale = Vec2(scaleX, scaleY);
+	int newScaleX = scaleX;
+	int newScaleY = scaleY;
+
+	if (newScaleX == 0) {
+		newScaleX = 1;
+	}
+
+	if (newScaleY == 0) {
+		newScaleY = 1;
+	}
+
+	this->scale = Vec2(newScaleX, newScaleY);
 }
 
 Vec2 Sprite::GetScale() {

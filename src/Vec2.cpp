@@ -132,7 +132,16 @@ Vec2 Vec2::RotateInDegrees(double angle) {
 }
 
 
+double Vec2::AngleOfLine(const Vec2& vector) {
+	double y, x, angle;
 
+	y = vector.y - this->x;
+	x = vector.x - this->x;
+
+	angle = atan2(y, x);
+
+	return angle;
+}
 
 
 

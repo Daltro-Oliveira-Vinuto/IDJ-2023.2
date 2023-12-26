@@ -74,7 +74,8 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* desiredObject) {
 
 void State::LoadAssets() {
 		
-	std::unique_ptr<GameObject> newGameObject(new GameObject());
+	std::shared_ptr<GameObject> newGameObject =
+				std::make_shared<GameObject>();
 
 	std::unique_ptr<Sprite> newSprite(new Sprite(*newGameObject, "assets/img/ocean.jpg") );
 	
@@ -91,12 +92,12 @@ void State::LoadAssets() {
 
 	newGameObject->AddComponent(std::move(cameraFollower));
 
-	objectArray.emplace_back(std::move(newGameObject));
+	objectArray.push_back(newGameObject);
 
 
 
-	std::unique_ptr<GameObject> gameObjectWithTileMap =
-		 std::make_unique<GameObject>();
+	std::shared_ptr<GameObject> gameObjectWithTileMap =
+		 std::make_shared<GameObject>();
 
 	TileSet* tileSet = new TileSet(64,64,"assets/img/tileset.png");
 
@@ -108,7 +109,7 @@ void State::LoadAssets() {
 
 	gameObjectWithTileMap->AddComponent(std::move(tileMap));
 
-	objectArray.emplace_back(std::move( gameObjectWithTileMap) );
+	objectArray.push_back( gameObjectWithTileMap );
 
 
 	std::shared_ptr<GameObject> alienGameObject = 
@@ -122,7 +123,7 @@ void State::LoadAssets() {
 
 	alienGameObject->AddComponent(std::move(alienComponent));
 
-	objectArray.emplace_back(std::move(alienGameObject));
+	objectArray.push_back(alienGameObject);
 
 	time_passed = 0;
 

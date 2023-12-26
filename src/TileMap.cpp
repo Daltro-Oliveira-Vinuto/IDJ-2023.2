@@ -136,7 +136,8 @@ void TileMap::Render() {
 }	
 
 void TileMap::Update(float dt) {
-
+	//std::cout << "tileMap game object angleDeg: " <<
+	//		associated.angleDeg << std::endl;
 }
 
 bool TileMap::Is(std::string type) {

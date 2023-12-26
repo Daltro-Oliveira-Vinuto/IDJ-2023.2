@@ -12,7 +12,7 @@ class Bullet: public Component {
 public:
 	Bullet(GameObject& associated,
 		   float angle,
-		   float speed,
+		   Vec2 speed,
 		   int damage,
 		   float maxDistance,
 		   std::string sprite);

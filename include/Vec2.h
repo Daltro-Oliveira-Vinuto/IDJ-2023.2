@@ -26,6 +26,7 @@ public:
 	Vec2 RotateInDegrees(double);
 	double DotProduct(const Vec2&);
 	double AngleBetween(const Vec2&);
+	double AngleOfLine(const Vec2&);
 
 	static double ConvertRadianToDegree(double angle) {
 	return (angle*180.0)/M_PI;

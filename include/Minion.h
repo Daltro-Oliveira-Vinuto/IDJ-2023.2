@@ -24,7 +24,7 @@ private:
 	std::weak_ptr< GameObject> alienCenter;
 	
 	float arc;
-
+	float scale;
 };
 
 
